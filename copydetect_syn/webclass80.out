@@ -1,0 +1,474 @@
+nohup: 忽略输入
+/usr/t-3058/detect/sys/copydetect
+ * Serving Flask app 'Webclass80'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:80
+ * Running on http://10.10.62.32:80
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 107-627-991
+172.16.72.173 - - [01/Apr/2025 19:40:01] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [01/Apr/2025 19:40:01] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 19:40:01] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 19:40:01] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+post changed...
+post changed...
+/usr/t-3058/detect/sys/copydetect/Webclass80.py:147: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  response = es.search(index=index_name, body=query_body, request_timeout=30)
+/usr/t-3058/detect/sys/copydetect
+进入了
+[{"HeavyLightDecomposition.javasource-document1824624.java":{},"sus_length":5060,"src_length":3122}, {"HeavyLightDecomposition.javasource-document1270099.java":{"feature1":{"offset":2552,"length":1495,"srcOffset":587,"srcLength":700}},"sus_length":5060,"src_length":1286}, {"HeavyLightDecomposition.javasource-document2072314.java":{"feature1":{"offset":462,"length":662,"srcOffset":0,"srcLength":433}},"sus_length":5060,"src_length":978}, {"HeavyLightDecomposition.javasource-document1666775.java":{},"sus_length":5060,"src_length":1863}, {"HeavyLightDecomposition.javasource-document1784381.java":{},"sus_length":5060,"src_length":1197}, {"HeavyLightDecomposition.javasource-document1548338.java":{},"sus_length":5060,"src_length":1738}, {"HeavyLightDecomposition.javasource-document1549537.java":{"feature1":{"offset":462,"length":1468,"srcOffset":175,"srcLength":1510}},"sus_length":5060,"src_length":1837}]
+     0%|          | 0/8 [00:00<?, ?it/s]   100%|██████████| 8/8 [00:00<00:00, 43018.50it/s]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 4563.99it/s]
+172.16.72.173 - - [01/Apr/2025 19:40:20] "POST /upcode_file HTTP/1.1" 200 -
+172.16.72.173 - - [01/Apr/2025 19:40:20] "GET /static/report.html HTTP/1.1" 200 -
+172.16.72.173 - - [01/Apr/2025 19:42:56] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [01/Apr/2025 19:42:56] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 19:42:56] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 19:42:56] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+post changed...
+Output saved to /usr/t-3058/detect/sys/copydetect/static/report.html
+进入了
+[{"BufferedReader.javasource-document2121238.java":{"feature1":{"offset":489,"length":4850,"srcOffset":176,"srcLength":1123}},"sus_length":5340,"src_length":1300}]
+     0%|          | 0/2 [00:00<?, ?it/s]   100%|██████████| 2/2 [00:00<00:00, 17924.38it/s]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 7639.90it/s]
+172.16.72.173 - - [01/Apr/2025 19:43:16] "POST /upcode_file HTTP/1.1" 200 -
+172.16.72.173 - - [01/Apr/2025 19:43:16] "GET /static/report.html HTTP/1.1" 200 -
+172.16.72.173 - - [01/Apr/2025 19:52:25] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [01/Apr/2025 19:52:25] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 19:52:25] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 19:52:26] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+pre changed...
+Output saved to /usr/t-3058/detect/sys/copydetect/static/report.html
+进入了
+[{"suspicious-document000003.javasource-document2336416.java":{"feature1":{"offset":0,"length":2307,"srcOffset":0,"srcLength":1886}},"sus_length":3403,"src_length":1933}, {"suspicious-document000003.javasource-document1260833.java":{"feature1":{"offset":2322,"length":888,"srcOffset":0,"srcLength":773}},"sus_length":3403,"src_length":1967}, {"suspicious-document000003.javasource-document1646866.java":{"feature1":{"offset":2322,"length":888,"srcOffset":0,"srcLength":773}},"sus_length":3403,"src_length":1967}, {"suspicious-document000003.javasource-document0053461.java":{},"sus_length":3403,"src_length":1198}, {"suspicious-document000003.javasource-document0081996.java":{},"sus_length":3403,"src_length":2058}, {"suspicious-document000003.javasource-document0082115.java":{},"sus_length":3403,"src_length":1215}, {"suspicious-document000003.javasource-document0082123.java":{},"sus_length":3403,"src_length":1205}, {"suspicious-document000003.javasource-document0535716.java":{},"sus_length":3403,"src_length":1198}, {"suspicious-document000003.javasource-document0197244.java":{},"sus_length":3403,"src_length":1205}, {"suspicious-document000003.javasource-document1054886.java":{},"sus_length":3403,"src_length":1215}, {"suspicious-document000003.javasource-document0285409.java":{},"sus_length":3403,"src_length":2454}, {"suspicious-document000003.javasource-document0142993.java":{},"sus_length":3403,"src_length":2687}, {"suspicious-document000003.javasource-document0263004.java":{},"sus_length":3403,"src_length":2676}, {"suspicious-document000003.javasource-document1523379.java":{},"sus_length":3403,"src_length":2676}, {"suspicious-document000003.javasource-document1125399.java":{},"sus_length":3403,"src_length":2676}, {"suspicious-document000003.javasource-document0796751.java":{},"sus_length":3403,"src_length":3245}, {"suspicious-document000003.javasource-document1989178.java":{},"sus_length":3403,"src_length":3245}, {"suspicious-document000003.javasource-document1003963.java":{},"sus_length":3403,"src_length":5721}, {"suspicious-document000003.javasource-document1774253.java":{},"sus_length":3403,"src_length":174}, {"suspicious-document000003.javasource-document1591885.java":{},"sus_length":3403,"src_length":3211}]
+     0%|          | 0/21 [00:00<?, ?it/s]   100%|██████████| 21/21 [00:00<00:00, 58138.87it/s]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 3584.88it/s]
+172.16.72.173 - - [01/Apr/2025 19:52:35] "POST /upcode_file HTTP/1.1" 200 -
+172.16.72.173 - - [01/Apr/2025 19:52:35] "GET /static/report.html HTTP/1.1" 200 -
+172.16.72.173 - - [01/Apr/2025 20:17:51] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [01/Apr/2025 20:17:51] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 20:17:51] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 20:17:51] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 21:41:26] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [01/Apr/2025 21:41:26] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 21:41:26] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 21:41:26] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 21:41:31] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [01/Apr/2025 21:41:31] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 21:41:31] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.173 - - [01/Apr/2025 21:41:31] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 02:47:58] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 02:47:58] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 02:47:58] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 02:47:58] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 02:47:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+172.16.72.172 - - [02/Apr/2025 08:07:13] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 08:07:13] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 08:07:16] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 08:07:16] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 08:07:17] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 08:07:21] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+172.16.72.172 - - [02/Apr/2025 08:41:57] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 08:41:58] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 08:41:58] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 08:41:58] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 10:38:05] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 10:38:05] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 10:38:05] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 10:38:06] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 10:38:06] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 10:38:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+172.16.72.172 - - [02/Apr/2025 10:57:56] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 10:57:56] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 10:57:56] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 10:57:56] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 10:58:06] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 10:58:06] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 10:58:06] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 10:58:06] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:32:12] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 15:32:12] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:32:12] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:32:12] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:33:31] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 15:33:31] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:33:31] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:33:31] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:42:03] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 15:42:03] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 15:42:04] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 15:42:04] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+WARNING:root:No files found in /usr/t-3058/detect/sys/copydetect/downs
+Output saved to /usr/t-3058/detect/sys/copydetect/static/report.html
+进入了
+[]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 3469.23it/s]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 9198.04it/s]
+/usr/t-3058/detect/sys/copydetect/myreport.py:383: UserWarning: Attempting to set identical low and high xlims makes transformation singular; automatically expanding.
+  plt.imshow(plot_mtx)
+172.16.72.172 - - [02/Apr/2025 15:45:42] "POST /upcode_file HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 15:45:42] "POST /upcode_file HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 15:45:42] "GET /static/report.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 15:45:42] "GET /static/report.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 15:46:59] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 15:46:59] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 15:46:59] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 15:46:59] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:46:59] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 15:46:59] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 15:46:59] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 15:46:59] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.110.110 - - [02/Apr/2025 15:53:19] "[32mGET / HTTP/1.0[0m" 302 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:19] "[32mGET / HTTP/1.0[0m" 302 -
+172.16.110.110 - - [02/Apr/2025 15:53:19] "OPTIONS / HTTP/1.0" 200 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:19] "OPTIONS / HTTP/1.0" 200 -
+172.16.110.110 - - [02/Apr/2025 15:53:19] code 400, message Bad request version ('RTSP/1.0')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:19] code 400, message Bad request version ('RTSP/1.0')
+172.16.110.110 - - [02/Apr/2025 15:53:19] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:19] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:24] code 400, message Bad HTTP/0.9 request type ('l\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:24] code 400, message Bad HTTP/0.9 request type ('l\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:24] "[35m[1ml\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:24] "[35m[1ml\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:24] "[33mGET /nice%20ports,/Trinity.txt.bak HTTP/1.0[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:24] "[33mGET /nice%20ports,/Trinity.txt.bak HTTP/1.0[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 15:53:29] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:29] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:29] "[35m[1m\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:29] "[35m[1m\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:34] code 400, message Bad HTTP/0.9 request type ('\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:34] code 400, message Bad HTTP/0.9 request type ('\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:34] "[35m[1m\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:34] "[35m[1m\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad HTTP/0.9 request type ('\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad HTTP/0.9 request type ('\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1m\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1m\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad request syntax ('HELP')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad request syntax ('HELP')
+172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1mHELP[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1mHELP[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1m\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1m\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad request version ('\x00/\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad request version ('\x00/\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1m\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1m\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1m\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:39] "[35m[1m\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:44] code 400, message Bad request version ('0.12\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:44] code 400, message Bad request version ('0.12\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:44] "[35m[1m\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:44] "[35m[1m\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:44] code 400, message Bad request syntax ('\x01default')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:44] code 400, message Bad request syntax ('\x01default')
+172.16.110.110 - - [02/Apr/2025 15:53:44] "[35m[1m\x01default[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:44] "[35m[1m\x01default[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:44] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:44] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:44] "[35m[1m0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:44] "[35m[1m0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:49] code 400, message Bad HTTP/0.9 request type ('0')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:49] code 400, message Bad HTTP/0.9 request type ('0')
+172.16.110.110 - - [02/Apr/2025 15:53:49] "[35m[1m0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:49] "[35m[1m0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:49] code 400, message Bad request version ('SIP/2.0')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:49] code 400, message Bad request version ('SIP/2.0')
+172.16.110.110 - - [02/Apr/2025 15:53:49] "[35m[1mOPTIONS sip:nm SIP/2.0[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:49] "[35m[1mOPTIONS sip:nm SIP/2.0[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:54] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:54] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:54] "[35m[1mTNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:54] "[35m[1mTNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:53:59] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:59] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
+172.16.110.110 - - [02/Apr/2025 15:53:59] "[35m[1m\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:53:59] "[35m[1m\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:04] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:04] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
+172.16.110.110 - - [02/Apr/2025 15:54:04] "[35m[1mDmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:04] "[35m[1mDmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:09] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:09] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
+172.16.110.110 - - [02/Apr/2025 15:54:09] "[35m[1m:\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:09] "[35m[1m:\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:14] code 400, message Bad request syntax ('JRMI\x00\x02K')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:14] code 400, message Bad request syntax ('JRMI\x00\x02K')
+172.16.110.110 - - [02/Apr/2025 15:54:14] "[35m[1mJRMI\x00\x02K[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:14] "[35m[1mJRMI\x00\x02K[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:19] code 400, message Bad request version ('\x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:19] code 400, message Bad request version ('\x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_')
+172.16.110.110 - - [02/Apr/2025 15:54:19] "[35m[1m\x01\x00\x00ýÎú\x0b° \x00\x00\x00MMS\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x01\x00\x03\x00ðððð\x0b\x00\x04\x00\x1c\x00\x03\x00N\x00S\x00P\x00l\x00a\x00y\x00e\x00r\x00/\x009\x00.\x000\x00.\x000\x00.\x002\x009\x008\x000\x00;\x00 \x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:19] "[35m[1m\x01\x00\x00ýÎú\x0b° \x00\x00\x00MMS\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x01\x00\x03\x00ðððð\x0b\x00\x04\x00\x1c\x00\x03\x00N\x00S\x00P\x00l\x00a\x00y\x00e\x00r\x00/\x009\x00.\x000\x00.\x000\x00.\x002\x009\x008\x000\x00;\x00 \x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:24] code 400, message Bad HTTP/0.9 request type ('\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:24] code 400, message Bad HTTP/0.9 request type ('\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00')
+172.16.110.110 - - [02/Apr/2025 15:54:24] "[35m[1m\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00 \x00:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004æ\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00(CONNECT_DATA=(COMMAND=version))[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:24] "[35m[1m\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00 \x00:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004æ\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00(CONNECT_DATA=(COMMAND=version))[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:29] code 400, message Bad request version ('\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:29] code 400, message Bad request version ('\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00')
+172.16.110.110 - - [02/Apr/2025 15:54:29] "[35m[1m\x12\x01\x004\x00\x00\x00\x00\x00\x00\x15\x00\x06\x01\x00\x1b\x00\x01\x02\x00\x1c\x00\x0c\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:29] "[35m[1m\x12\x01\x004\x00\x00\x00\x00\x00\x00\x15\x00\x06\x01\x00\x1b\x00\x01\x02\x00\x1c\x00\x0c\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:34] code 400, message Bad request syntax ('\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:34] code 400, message Bad request syntax ('\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00')
+172.16.110.110 - - [02/Apr/2025 15:54:34] "[35m[1m\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:34] "[35m[1m\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:39] code 400, message Bad request syntax ('GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:39] code 400, message Bad request syntax ('GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00')
+172.16.110.110 - - [02/Apr/2025 15:54:39] "[35m[1mGIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:39] "[35m[1mGIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:54:39] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:39] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.110.110 - - [02/Apr/2025 15:54:57] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:57] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.110.110 - - [02/Apr/2025 15:54:57] "[33mPOST /sdk HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:57] "[33mPOST /sdk HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 15:54:57] "[33mGET /text4041743580497 HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:57] "[33mGET /text4041743580497 HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 15:54:57] "[33mGET /HNAP1 HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:57] "[33mGET /HNAP1 HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 15:54:58] "[33mGET /evox/about HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:58] "[33mGET /evox/about HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 15:54:58] code 400, message Bad HTTP/0.9 request type ('t3')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:58] code 400, message Bad HTTP/0.9 request type ('t3')
+172.16.110.110 - - [02/Apr/2025 15:54:58] "[35m[1mt3 12.1.2[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:54:58] "[35m[1mt3 12.1.2[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:55:08] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ö\x08\x17\x91ªé0Oþ:Ëu\x97¤Y4')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:55:08] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ö\x08\x17\x91ªé0Oþ:Ëu\x97¤Y4')
+172.16.110.110 - - [02/Apr/2025 15:55:08] "[35m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ö\x08\x17\x91ªé0Oþ:Ëu\x97¤Y4 \x1f\x10\x9cÔ|\x9dô*«\x84\x98WE,\x1b\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:55:08] "[35m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ö\x08\x17\x91ªé0Oþ:Ëu\x97¤Y4 \x1f\x10\x9cÔ|\x9dô*«\x84\x98WE,\x1b\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:55:08] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03·Ãw¿ä\x9e8\x8e=6')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 15:55:08] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03·Ãw¿ä\x9e8\x8e=6')
+172.16.110.110 - - [02/Apr/2025 15:55:08] "[35m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03·Ãw¿ä\x9e8\x8e=6\x1d\x84ÆÈ\x04"á\x80X\x81Þ\x844C\x8cóõ¹WUw¯\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:55:08] "[35m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03·Ãw¿ä\x9e8\x8e=6\x1d\x84ÆÈ\x04"á\x80X\x81Þ\x844C\x8cóõ¹WUw¯\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 15:55:09] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:55:09] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.110.110 - - [02/Apr/2025 15:55:09] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:55:09] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.110.110 - - [02/Apr/2025 15:55:09] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:55:09] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 15:55:09] "[33mGET /robots.txt HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 15:55:09] "[33mGET /robots.txt HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 16:00:21] "[32mGET / HTTP/1.0[0m" 302 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:21] "[32mGET / HTTP/1.0[0m" 302 -
+172.16.110.110 - - [02/Apr/2025 16:00:21] "OPTIONS / HTTP/1.0" 200 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:21] "OPTIONS / HTTP/1.0" 200 -
+172.16.110.110 - - [02/Apr/2025 16:00:21] code 400, message Bad request version ('RTSP/1.0')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:21] code 400, message Bad request version ('RTSP/1.0')
+172.16.110.110 - - [02/Apr/2025 16:00:21] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:21] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:26] code 400, message Bad HTTP/0.9 request type ('l\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:26] code 400, message Bad HTTP/0.9 request type ('l\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:26] "[35m[1ml\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:26] "[35m[1ml\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:26] "[33mGET /nice%20ports,/Trinity.txt.bak HTTP/1.0[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:26] "[33mGET /nice%20ports,/Trinity.txt.bak HTTP/1.0[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 16:00:31] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:31] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:31] "[35m[1m\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:31] "[35m[1m\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:36] code 400, message Bad HTTP/0.9 request type ('\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:36] code 400, message Bad HTTP/0.9 request type ('\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:36] "[35m[1m\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:36] "[35m[1m\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad HTTP/0.9 request type ('\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad HTTP/0.9 request type ('\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1m\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1m\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad request syntax ('HELP')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad request syntax ('HELP')
+172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1mHELP[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1mHELP[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1m\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1m\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad request version ('\x00/\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad request version ('\x00/\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1m\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1m\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1m\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:41] "[35m[1m\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:46] code 400, message Bad request version ('0.12\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:46] code 400, message Bad request version ('0.12\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:46] "[35m[1m\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:46] "[35m[1m\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:46] code 400, message Bad request syntax ('\x01default')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:46] code 400, message Bad request syntax ('\x01default')
+172.16.110.110 - - [02/Apr/2025 16:00:46] "[35m[1m\x01default[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:46] "[35m[1m\x01default[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:46] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:46] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:46] "[35m[1m0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:46] "[35m[1m0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:51] code 400, message Bad HTTP/0.9 request type ('0')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:51] code 400, message Bad HTTP/0.9 request type ('0')
+172.16.110.110 - - [02/Apr/2025 16:00:51] "[35m[1m0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:51] "[35m[1m0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:51] code 400, message Bad request version ('SIP/2.0')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:51] code 400, message Bad request version ('SIP/2.0')
+172.16.110.110 - - [02/Apr/2025 16:00:51] "[35m[1mOPTIONS sip:nm SIP/2.0[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:51] "[35m[1mOPTIONS sip:nm SIP/2.0[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:00:56] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:56] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
+172.16.110.110 - - [02/Apr/2025 16:00:56] "[35m[1mTNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:00:56] "[35m[1mTNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:01] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:01] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
+172.16.110.110 - - [02/Apr/2025 16:01:01] "[35m[1m\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:01] "[35m[1m\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:06] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:06] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
+172.16.110.110 - - [02/Apr/2025 16:01:06] "[35m[1mDmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:06] "[35m[1mDmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:11] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:11] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
+172.16.110.110 - - [02/Apr/2025 16:01:11] "[35m[1m:\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:11] "[35m[1m:\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:16] code 400, message Bad request syntax ('JRMI\x00\x02K')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:16] code 400, message Bad request syntax ('JRMI\x00\x02K')
+172.16.110.110 - - [02/Apr/2025 16:01:16] "[35m[1mJRMI\x00\x02K[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:16] "[35m[1mJRMI\x00\x02K[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:21] code 400, message Bad request version ('\x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:21] code 400, message Bad request version ('\x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_')
+172.16.110.110 - - [02/Apr/2025 16:01:21] "[35m[1m\x01\x00\x00ýÎú\x0b° \x00\x00\x00MMS\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x01\x00\x03\x00ðððð\x0b\x00\x04\x00\x1c\x00\x03\x00N\x00S\x00P\x00l\x00a\x00y\x00e\x00r\x00/\x009\x00.\x000\x00.\x000\x00.\x002\x009\x008\x000\x00;\x00 \x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:21] "[35m[1m\x01\x00\x00ýÎú\x0b° \x00\x00\x00MMS\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x01\x00\x03\x00ðððð\x0b\x00\x04\x00\x1c\x00\x03\x00N\x00S\x00P\x00l\x00a\x00y\x00e\x00r\x00/\x009\x00.\x000\x00.\x000\x00.\x002\x009\x008\x000\x00;\x00 \x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:26] code 400, message Bad HTTP/0.9 request type ('\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:26] code 400, message Bad HTTP/0.9 request type ('\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00')
+172.16.110.110 - - [02/Apr/2025 16:01:26] "[35m[1m\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00 \x00:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004æ\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00(CONNECT_DATA=(COMMAND=version))[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:26] "[35m[1m\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00 \x00:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004æ\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00(CONNECT_DATA=(COMMAND=version))[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:31] code 400, message Bad request version ('\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:31] code 400, message Bad request version ('\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00')
+172.16.110.110 - - [02/Apr/2025 16:01:31] "[35m[1m\x12\x01\x004\x00\x00\x00\x00\x00\x00\x15\x00\x06\x01\x00\x1b\x00\x01\x02\x00\x1c\x00\x0c\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:31] "[35m[1m\x12\x01\x004\x00\x00\x00\x00\x00\x00\x15\x00\x06\x01\x00\x1b\x00\x01\x02\x00\x1c\x00\x0c\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:36] code 400, message Bad request syntax ('\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:36] code 400, message Bad request syntax ('\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00')
+172.16.110.110 - - [02/Apr/2025 16:01:36] "[35m[1m\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:36] "[35m[1m\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:41] code 400, message Bad request syntax ('GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:41] code 400, message Bad request syntax ('GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00')
+172.16.110.110 - - [02/Apr/2025 16:01:41] "[35m[1mGIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:41] "[35m[1mGIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:41] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:41] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.110.110 - - [02/Apr/2025 16:01:48] "[33mPOST /sdk HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:48] "[33mPOST /sdk HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 16:01:48] code 400, message Bad HTTP/0.9 request type ('t3')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:48] code 400, message Bad HTTP/0.9 request type ('t3')
+172.16.110.110 - - [02/Apr/2025 16:01:48] "[33mGET /text4041743580908 HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:48] "[33mGET /text4041743580908 HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 16:01:48] "[35m[1mt3 12.1.2[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:48] "[35m[1mt3 12.1.2[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:48] "[33mGET /evox/about HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:48] "[33mGET /evox/about HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 16:01:48] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:48] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.110.110 - - [02/Apr/2025 16:01:48] "[33mGET /HNAP1 HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:48] "[33mGET /HNAP1 HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 16:01:58] code 400, message Bad request version ('\x805}nÙé\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:58] code 400, message Bad request version ('\x805}nÙé\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00')
+172.16.110.110 - - [02/Apr/2025 16:01:58] "[35m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x035Õª¨ñ\x0eÐÅ\x9e9\x0f\x0cé¡n/=È7¯\x84\x83É\x17Z\x0c\x805}nÙé\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:58] "[35m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x035Õª¨ñ\x0eÐÅ\x9e9\x0f\x0cé¡n/=È7¯\x84\x83É\x17Z\x0c\x805}nÙé\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:58] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03J\x10qÿ.xoÊ)Ò¡ÿ½:àè-þrü´Ï\x17AòÏ~\x99È%,W\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00')
+ERROR:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:58] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03J\x10qÿ.xoÊ)Ò¡ÿ½:àè-þrü´Ï\x17AòÏ~\x99È%,W\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00')
+172.16.110.110 - - [02/Apr/2025 16:01:58] "[35m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03J\x10qÿ.xoÊ)Ò¡ÿ½:àè-þrü´Ï\x17AòÏ~\x99È%,W\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:58] "[35m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03J\x10qÿ.xoÊ)Ò¡ÿ½:àè-þrü´Ï\x17AòÏ~\x99È%,W\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00[0m" HTTPStatus.BAD_REQUEST -
+172.16.110.110 - - [02/Apr/2025 16:01:59] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:59] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.110.110 - - [02/Apr/2025 16:01:59] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:59] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.110.110 - - [02/Apr/2025 16:01:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+172.16.110.110 - - [02/Apr/2025 16:01:59] "[33mGET /robots.txt HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.110.110 - - [02/Apr/2025 16:01:59] "[33mGET /robots.txt HTTP/1.1[0m" 404 -
+172.16.72.172 - - [02/Apr/2025 16:03:39] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:03:39] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 16:03:39] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:03:39] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 16:03:39] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:03:39] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 16:03:39] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:03:39] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.172 - - [02/Apr/2025 16:21:14] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:14] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 16:21:14] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:14] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 16:21:14] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:14] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 16:21:14] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:14] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 16:21:16] "[33mGET /static/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:16] "[33mGET /static/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+172.16.72.172 - - [02/Apr/2025 16:21:16] "[33mGET /static/bootstrap.min.js.map HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:16] "[33mGET /static/bootstrap.min.js.map HTTP/1.1[0m" 404 -
+172.16.72.172 - - [02/Apr/2025 16:21:18] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:18] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 16:21:18] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:18] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 16:21:18] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:18] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 16:21:18] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:18] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 16:21:20] "[33mGET /static/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:20] "[33mGET /static/bootstrap.min.css.map HTTP/1.1[0m" 404 -
+172.16.72.172 - - [02/Apr/2025 16:21:20] "[33mGET /static/bootstrap.min.js.map HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:21:20] "[33mGET /static/bootstrap.min.js.map HTTP/1.1[0m" 404 -
+172.16.72.172 - - [02/Apr/2025 16:33:52] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:33:52] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.172 - - [02/Apr/2025 16:33:52] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:33:52] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 16:33:53] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:33:53] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+172.16.72.172 - - [02/Apr/2025 16:33:53] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.172 - - [02/Apr/2025 16:33:53] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 16:42:11] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 16:42:11] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [02/Apr/2025 16:42:11] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 16:42:11] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 16:42:11] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 16:42:11] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.173 - - [02/Apr/2025 16:42:11] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 16:42:11] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+172.16.72.173 - - [02/Apr/2025 16:42:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 16:42:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+Output saved to /usr/t-3058/detect/sys/copydetect/static/report.html
+进入了
+[{"suspicious-document000001(自主率检测).javasource-document1070483.java":{"feature1":{"offset":12,"length":2655,"srcOffset":0,"srcLength":2376}},"sus_length":6822,"src_length":2375}, {"suspicious-document000001(自主率检测).javasource-document2264813.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":2082}},"sus_length":6822,"src_length":2147}, {"suspicious-document000001(自主率检测).javasource-document2264819.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":1809}},"sus_length":6822,"src_length":1874}, {"suspicious-document000001(自主率检测).javasource-document0172528.java":{"feature1":{"offset":1688,"length":2885,"srcOffset":0,"srcLength":1966}},"sus_length":6822,"src_length":1980}, {"suspicious-document000001(自主率检测).javasource-document2264812.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":284,"srcLength":2221}},"sus_length":6822,"src_length":2598}, {"suspicious-document000001(自主率检测).javasource-document2264820.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":1708}},"sus_length":6822,"src_length":1801}, {"suspicious-document000001(自主率检测).javasource-document2264815.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":371,"srcLength":5038}},"sus_length":6822,"src_length":5474}, {"suspicious-document000001(自主率检测).javasource-document2264818.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":375,"srcLength":6082}},"sus_length":6822,"src_length":6523}, {"suspicious-document000001(自主率检测).javasource-document2264814.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":1327,"srcLength":3587}},"sus_length":6822,"src_length":6617}, {"suspicious-document000001(自主率检测).javasource-document0172522.java":{},"sus_length":6822,"src_length":317}, {"suspicious-document000001(自主率检测).javasource-document0172544.java":{},"sus_length":6822,"src_length":370}, {"suspicious-document000001(自主率检测).javasource-document0172571.java":{},"sus_length":6822,"src_length":413}, {"suspicious-document000001(自主率检测).javasource-document0172516.java":{},"sus_length":6822,"src_length":524}, {"suspicious-document000001(自主率检测).javasource-document0172548.java":{},"sus_length":6822,"src_length":652}, {"suspicious-document000001(自主率检测).javasource-document0172519.java":{},"sus_length":6822,"src_length":732}, {"suspicious-document000001(自主率检测).javasource-document0172583.java":{},"sus_length":6822,"src_length":784}, {"suspicious-document000001(自主率检测).javasource-document0172551.java":{},"sus_length":6822,"src_length":977}, {"suspicious-document000001(自主率检测).javasource-document0172578.java":{},"sus_length":6822,"src_length":1020}, {"suspicious-document000001(自主率检测).javasource-document0172515.java":{},"sus_length":6822,"src_length":1175}, {"suspicious-document000001(自主率检测).javasource-document0172553.java":{},"sus_length":6822,"src_length":1204}]
+     0%|          | 0/21 [00:00<?, ?it/s]   100%|██████████| 21/21 [00:00<00:00, 17776.06it/s]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 2189.09it/s]
+172.16.72.173 - - [02/Apr/2025 16:42:40] "POST /upcode_file HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 16:42:40] "POST /upcode_file HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 16:42:40] "GET /static/report.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 16:42:40] "GET /static/report.html HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 19:21:24] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:24] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [02/Apr/2025 19:21:24] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:24] "GET /static/fileyploda80.html HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 19:21:24] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:24] "GET /static/bootstrap.min.js HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 19:21:24] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:24] "GET /static/bootstrap.min.css HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 19:21:25] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:25] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+Output saved to /usr/t-3058/detect/sys/copydetect/static/report.html
+进入了
+[{"source-document2336416.javasource-document2336416.java":{"feature1":{"offset":0,"length":1930,"srcOffset":0,"srcLength":1887}},"sus_length":1978,"src_length":1933}]
+     0%|          | 0/2 [00:00<?, ?it/s]   100%|██████████| 2/2 [00:00<00:00, 16578.28it/s]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 8371.86it/s]
+172.16.72.173 - - [02/Apr/2025 19:21:34] "POST /upcode_file HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:34] "POST /upcode_file HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 19:21:34] "GET /static/report.html HTTP/1.1" 200 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:34] "GET /static/report.html HTTP/1.1" 200 -
+172.16.72.173 - - [02/Apr/2025 19:21:47] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:47] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.173 - - [02/Apr/2025 19:21:47] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:172.16.72.173 - - [02/Apr/2025 19:21:47] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -

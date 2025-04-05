@@ -1,0 +1,36 @@
+nohup: 忽略输入
+/usr/t-3058/detect/sys/copydetect_syn
+ * Serving Flask app 'Webclass80'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:80
+ * Running on http://10.10.62.32:80
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 107-627-991
+172.16.72.173 - - [05/Apr/2025 16:05:27] "[32mGET / HTTP/1.1[0m" 302 -
+172.16.72.173 - - [05/Apr/2025 16:05:27] "[36mGET /static/fileyploda80.html HTTP/1.1[0m" 304 -
+172.16.72.173 - - [05/Apr/2025 16:05:27] "[36mGET /static/bootstrap.min.css HTTP/1.1[0m" 304 -
+172.16.72.173 - - [05/Apr/2025 16:05:27] "[36mGET /static/bootstrap.min.js HTTP/1.1[0m" 304 -
+/usr/t-3058/detect/sys/copydetect_syn/Webclass80.py:174: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  response = es.search(index=index_name, body=query_body, request_timeout=30)
+/usr/t-3058/detect/sys/copydetect_syn
+进入了
+当前主机 IP 地址：10.10.62.32
+🔧 运行在服务器环境，连接远程 Elasticsearch
+[{"source-document2336416.javasource-document2336416.java":{"feature1":{"offset":0,"length":1930,"srcOffset":0,"srcLength":1887}},"sus_length":1978,"src_length":1933}]
+     0%|          | 0/2 [00:00<?, ?it/s]   100%|██████████| 2/2 [00:00<00:00, 17924.38it/s]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 8924.05it/s]
+172.16.72.173 - - [05/Apr/2025 16:05:37] "POST /upcode_file HTTP/1.1" 200 -
+172.16.72.173 - - [05/Apr/2025 16:05:37] "GET /static/report.html HTTP/1.1" 200 -
+Output saved to /usr/t-3058/detect/sys/copydetect_syn/static/report.html
+进入了
+当前主机 IP 地址：10.10.62.32
+🔧 运行在服务器环境，连接远程 Elasticsearch
+[{"suspicious-document000001.javasource-document1070483.java":{"feature1":{"offset":12,"length":2655,"srcOffset":0,"srcLength":2376}},"sus_length":6822,"src_length":2375}, {"suspicious-document000001.javasource-document2264813.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":2082}},"sus_length":6822,"src_length":2147}, {"suspicious-document000001.javasource-document2264819.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":1809}},"sus_length":6822,"src_length":1874}, {"suspicious-document000001.javasource-document0172528.java":{"feature1":{"offset":1688,"length":2885,"srcOffset":0,"srcLength":1966}},"sus_length":6822,"src_length":1980}, {"suspicious-document000001.javasource-document2264812.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":284,"srcLength":2221}},"sus_length":6822,"src_length":2598}, {"suspicious-document000001.javasource-document2264820.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":1708}},"sus_length":6822,"src_length":1801}, {"suspicious-document000001.javasource-document2264815.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":371,"srcLength":5038}},"sus_length":6822,"src_length":5474}, {"suspicious-document000001.javasource-document2264818.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":375,"srcLength":6082}},"sus_length":6822,"src_length":6523}, {"suspicious-document000001.javasource-document2264814.java":{"feature1":{"offset":4573,"length":2178,"srcOffset":1327,"srcLength":3587}},"sus_length":6822,"src_length":6617}, {"suspicious-document000001.javasource-document0172522.java":{},"sus_length":6822,"src_length":317}, {"suspicious-document000001.javasource-document0172544.java":{},"sus_length":6822,"src_length":370}, {"suspicious-document000001.javasource-document0172571.java":{},"sus_length":6822,"src_length":413}, {"suspicious-document000001.javasource-document0172516.java":{},"sus_length":6822,"src_length":524}, {"suspicious-document000001.javasource-document0172548.java":{},"sus_length":6822,"src_length":652}, {"suspicious-document000001.javasource-document0172519.java":{},"sus_length":6822,"src_length":732}, {"suspicious-document000001.javasource-document0172583.java":{},"sus_length":6822,"src_length":784}, {"suspicious-document000001.javasource-document0172551.java":{},"sus_length":6822,"src_length":977}, {"suspicious-document000001.javasource-document0172578.java":{},"sus_length":6822,"src_length":1020}, {"suspicious-document000001.javasource-document0172515.java":{},"sus_length":6822,"src_length":1175}, {"suspicious-document000001.javasource-document0172553.java":{},"sus_length":6822,"src_length":1204}]
+     0%|          | 0/21 [00:00<?, ?it/s]   100%|██████████| 21/21 [00:00<00:00, 45449.11it/s]
+     0%|          | 0/1 [00:00<?, ?it/s]   100%|██████████| 1/1 [00:00<00:00, 2343.19it/s]
+172.16.72.173 - - [05/Apr/2025 16:05:58] "POST /upcode_file HTTP/1.1" 200 -
+172.16.72.173 - - [05/Apr/2025 16:05:58] "GET /static/report.html HTTP/1.1" 200 -

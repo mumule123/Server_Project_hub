@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传</title>
+    <!-- 本地 Bootstrap 样式 -->
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <!-- Font Awesome 样式 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 3vh 3vw;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px; /* 默认窗口大小下容器的最大宽度 */
+            width: 80%; /* 默认窗口大小下容器的宽度占比 */
+            margin: 3vh auto; /* 默认窗口大小下容器的上下边距 */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 3%; /* 默认窗口大小下容器的内边距 */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 使用vh单位和flex居中,不使用 mt-5 类 */
+        .container.mt-5 {
+            margin-top: 0 !important;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 2%; /* 默认窗口大小下h1元素的下边距 */
+            font-size: calc(1.5rem + 1vw); /* 默认窗口大小下h1元素的字体大小 */
+        }
+
+        h2 {
+            font-size: calc(1.3rem + 0.6vw); /* 默认窗口大小下h2元素的字体大小 */
+        }
+
+        h5 {
+            font-size: calc(1rem + 0.3vw); /* 默认窗口大小下h5元素的字体大小 */
+        }
+
+        .system-title {
+            background-color: #007bff;
+            color: white;
+            padding: 2% 0; /* 默认窗口大小下系统标题的上下内边距 */
+            margin: -3% -3% 3% -3%; /* 默认窗口大小下系统标题的负边距，使其与容器边缘对齐 */
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .system-title h2 {
+            font-size: calc(1.5rem + 0.8vw); /* 默认窗口大小下系统标题的字体大小 */
+            margin: 0;
+            padding: 0.5% 0; /* 默认窗口大小下系统标题内部的上下内边距 */
+        }
+
+        /* 隐藏默认文件选择控件 */
+        #fileInput {
+            display: none;
+        }
+
+        /* 选择文件按钮样式为浅色边框样式 */
+        label.upload-label {
+            display: inline-block;
+            background-color: white;
+            color: #007bff;
+            padding: 0.8em 1.5em; /* 默认窗口大小下上传标签的内边距 */
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            border: 2px solid #007bff;
+            font-weight: 500;
+            font-size: calc(0.9rem + 0.2vw); /* 默认窗口大小下上传标签的字体大小 */
+            box-sizing: border-box; /* 确保边框计入总宽度 */
+            width: 160px; /* 增加固定宽度，确保文本不会换行 */
+            text-align: center;
+            margin: 0; /* 移除可能的默认外边距 */
+            white-space: nowrap; /* 防止文本换行 */
+        }
+
+        label.upload-label:hover {
+            background-color: #f0f7ff;
+            border-color: #0056b3;
+            color: #0056b3;
+        }
+
+        /* 按钮内的图标与文本间距 */
+        label.upload-label i, #uploadButton i {
+            margin-right: 5px; /* 给图标和文字之间添加一些间距 */
+        }
+
+        /* 禁用状态的上传按钮样式 */
+        #uploadButton:disabled {
+            background-color: #b9d4f1;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        /* 错误状态的上传按钮样式 */
+        #uploadButton.error-state {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        /* 文件状态提示信息样式 */
+        .upload-status {
+            margin-top: 10px;
+            font-size: 0.85em;
+            padding: 5px;
+            border-radius: 3px;
+            display: none;
+        }
+        
+        /* 错误状态提示 */
+        .upload-status.error {
+            display: block;
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* 按钮组：水平排列的选择文件和上传文件 */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 2%; /* 默认窗口大小下按钮之间的间距 */
+            margin-top: 3%; /* 默认窗口大小下按钮组的上边距 */
+            flex-wrap: wrap;
+            margin-bottom: 5%; /* 按钮组的下边距 */
+            align-items: center; /* 确保按钮垂直对齐 */
+        }
+
+        .file-container {
+            margin: 4% 0; /* 默认窗口大小下文件容器的上下边距 */
+            border-radius: 8px;
+            padding: 4% 3%; /* 默认窗口大小下文件容器的内边距 */
+            background-color: #f8f9fa;
+            border: 1px dashed #ccc;
+            min-height: 20vh; /* 默认窗口大小下文件容器的最小高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .file-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2%; /* 默认窗口大小下文件头部的下边距 */
+            color: #0056b3;
+        }
+
+        .file-header i {
+            margin-right: 2%; /* 默认窗口大小下文件头部图标的右边距 */
+            font-size: calc(1.2rem + 0.5vw); /* 默认窗口大小下文件头部图标的字体大小 */
+        }
+
+        ul.file-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 2% 0 0; /* 默认窗口大小下文件列表的上边距 */
+        }
+
+        ul.file-list li {
+            margin: 1%; /* 默认窗口大小下文件列表项的边距 */
+            display: flex;
+            align-items: center;
+            background-color: #e9f0f8;
+            padding: 0.8em 1.2em 0.8em 1em; /* 默认窗口大小下文件列表项的内边距 */
+            border-radius: 5px;
+            border: 1px solid #bedcf3;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            position: relative; /* 删除按钮的相对定位 */
+            font-size: calc(0.85rem + 0.2vw); /* 默认窗口大小下文件列表项的字体大小 */
+        }
+
+        ul.file-list li:hover {
+            background-color: #d4e6f7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 调整文件项内部元素的布局 */
+        .file-item-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 0; /* 防止flex项目溢出 */
+        }
+        
+        .file-icon {
+            margin-right: 8px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .file-name {
+            flex: 1;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0; /* 确保文本溢出时可以正确截断 */
+        }
+        
+        .file-badges {
+            display: flex;
+            align-items: center;
+            margin-left: 5px;
+            white-space: nowrap; /* 防止内部元素换行 */
+            flex-shrink: 0; /* 防止badges区域被压缩 */
+        }
+        
+        /* 文件警告标签的样式 */
+        .unsupported-badge {
+            background-color: #dc3545;
+            color: white;
+            font-size: 0.7em;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+            display: block;
+            margin-right: 5px; /* 与删除按钮的间距 */
+            white-space: nowrap; /* 防止文字换行 */
+            /* 确保徽章有最小宽度，防止文字换行 */
+            min-width: 42px;
+            text-align: center;
+        }
+
+        .file-delete {
+            margin-left: 10px; /* 默认窗口大小下删除按钮的左边距 */
+            color: #dc3545;
+            cursor: pointer;
+            font-size: calc(0.9rem + 0.2vw); /* 默认窗口大小下删除按钮的字体大小 */
+            opacity: 0.7;
+            transition: all 0.2s ease;
+            padding: 0.2em;
+            border-radius: 50%;
+        }
+
+        .file-delete:hover {
+            opacity: 1;
+            background-color: #ffeeee;
+            transform: scale(1.1);
+        }
+
+        .no-files {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .custom-alert {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
+            margin-top: 2.5%; /* 默认窗口大小下提示框的上边距 */
+            margin-bottom: 2%; /* 默认窗口大小下提示框的下边距 */
+            font-size: calc(0.8rem + 0.15vw); /* 默认窗口大小下提示框的字体大小 */
+            border-radius: 8px;
+            padding: 1.5%; /* 默认窗口大小下提示框的内边距 */
+        }
+
+        /* 上传按钮实心样式 */
+        #uploadButton {
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.8em 1.5em; /* 默认窗口大小下上传按钮的内边距 */
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+            font-size: calc(0.9rem + 0.2vw); /* 默认窗口大小下上传按钮的字体大小 */
+            display: inline-block;
+            font-weight: 500;
+            box-sizing: border-box; /* 确保边框计入总宽度 */
+            width: 160px; /* 与选择文件按钮保持相同宽度 */
+            margin: 0; /* 移除可能的默认外边距 */
+            white-space: nowrap; /* 确保文本不会换行 */
+        }
+
+        #uploadButton:hover {
+            background-color: #0056b3;
+        }
+
+        /* 不支持文件格式的警告样式 */
+        ul.file-list li.unsupported-file {
+            border: 2px solid #dc3545;
+            background-color: #fff8f8;
+        }
+
+        .file-warning {
+            color: #dc3545;
+            margin-left: 5px;
+            font-size: 0.85em;
+        }
+
+        /* 响应式媒体查询 768px 以下的缩放 */
+        @media (max-width: 768px) {
+            .container {
+                width: 85%;
+                padding: 4%;
+                margin: 2vh auto;
+                max-width: 600px;
+            }
+            
+            .system-title {
+                margin: -4% -4% 4% -4%;
+            }
+            
+            .system-title h2 {
+                font-size: calc(1.4rem + 0.7vw);
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            label.upload-label, #uploadButton {
+                width: 80%;
+                margin: 0 auto;
+                box-sizing: border-box; /* 确保边框计入总宽度 */
+                max-width: 300px; /* 限制按钮最大宽度 */
+            }
+            
+            ul.file-list li {
+                width: 90%;
+                margin: 2% 0;
+            }
+            
+            .file-container {
+                min-height: 22vh;
+            }
+            
+            .custom-alert {
+                padding: 1.8%;
+                margin-bottom: 1.5%;
+            }
+
+            ul.file-list li.unsupported-file span {
+                max-width: calc(100% - 75px); /* 移动端上减少一点显示空间，以确保标签正常显示 */
+            }
+        }
+
+        /* 响应式媒体查询 480px 以下的缩放 */
+        @media (max-width: 480px) {
+            body {
+                padding: 2vh 2vw;
+            }
+
+            .container {
+                width: 90%;
+                padding: 5%;
+                margin: 1vh auto;
+                max-width: 450px;
+            }
+            
+            .system-title {
+                margin: -5% -5% 5% -5%;
+            }
+            
+            .system-title h2 {
+                font-size: calc(1.3rem + 0.6vw);
+            }
+            
+            .file-container {
+                min-height: 25vh;
+                padding: 5% 3%;
+            }
+            
+            label.upload-label, #uploadButton {
+                width: 100%;
+                font-size: calc(0.85rem + 0.2vw);
+                padding: 0.7em 1.2em; /* 减小超窄屏幕下的按钮内边距 */
+                max-width: 280px; /* 限制按钮最大宽度 */
+            }
+            
+            .custom-alert {
+                padding: 2%;
+                margin-bottom: 1%;
+            }
+        }
+
+        /* 超窄屏幕的媒体查询 */
+        @media (max-width: 360px) {
+            .container {
+                width: 95%;
+                padding: 5%;
+                margin: 1vh auto;
+            }
+            
+            .button-group {
+                width: 100%;
+            }
+            
+            label.upload-label, #uploadButton {
+                width: 90%; /* 按钮宽度占比 */
+                padding: 0.6em 1em; /* 按钮内边距 */
+                font-size: calc(0.8rem + 0.15vw); /* 动态字体大小 */
+                margin-bottom: 8px; /* 按钮之间的间距 */
+                max-width: 240px; /* 限制按钮最大宽度 */
+            }
+            
+            .system-title h2 {
+                font-size: calc(1.2rem + 0.5vw); /* 超窄屏幕下标题字体 */
+            }
+            
+            .file-container {
+                padding: 6% 2%; /* 文件容器内边距 */
+            }
+            
+            .custom-alert {
+                font-size: calc(0.75rem + 0.1vw); /* 减小提示文字大小 */
+                padding: 2.5% 1.5%; /* 调整提示框内边距 */
+            }
+            
+            .file-name {
+                max-width: 40%; /* 在超窄屏幕下限制文件名宽度 */
+            }
+            
+            /* 确保徽章不会换行显示 */
+            .unsupported-badge {
+                font-size: 0.65em; /* 字体大小要稍微小点 */
+                padding: 2px 3px; /* 内边距 */
+                min-width: 40px; /* 确保最小宽度 */
+            }
+            
+            /* 调整文件列表项的内边距 */
+            ul.file-list li {
+                padding: 0.7em 1em 0.7em 0.8em; /* 内边距 */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- 系统标题 -->
+        <div class="system-title">
+            <h2><i></i> 代码自研率检测系统</h2>
+        </div>
+
+        <!-- 文件选择控件 -->
+        <input type="file" id="fileInput" multiple>
+
+        <!-- 文件列表区域 -->
+        <div class="file-container" id="fileContainer">
+            <div class="file-header">
+                <i class="fas fa-file-code"></i>
+                <h5>已选择的文件</h5>
+            </div>
+            <ul class="file-list" id="fileList">
+                <li class="no-files">暂无文件，请点击下方按钮选择文件</li>
+            </ul>
+        </div>
+
+        <!-- 按钮组：选择文件和上传文件 -->
+        <div class="button-group">
+            <label class="upload-label" for="fileInput"><i class="fas fa-cloud-upload-alt"></i> 选择文件</label>
+            <button id="uploadButton" disabled><i class="fas fa-upload"></i> 上传文件</button>
+        </div>
+        
+        <!-- 上传状态提示 -->
+        <div id="uploadStatus" class="upload-status"></div>
+
+        <!-- 加载提示 -->
+        <div id="loadingIndicator" style="display: none; margin-top: 20px;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div style="margin-top: 10px; color: #007bff;">正在检索文件，计算自研率...</div>
+        </div>
+
+
+
+        <!-- 代码库更新日期提示 -->
+        <div class="alert alert-warning custom-alert" role="alert" style="margin-top: 20px; margin-bottom: 8px;">
+            <i class="fas fa-calendar-alt"></i> 当前系统代码库更新日期: <strong>2025年1月</strong>
+        </div>
+        
+        <!-- 按钮下方的 Java 文件检测提示 -->
+        <div class="alert alert-warning custom-alert" role="alert" style="margin-top: 8px; margin-bottom: 0px;">
+            <i class="fas fa-exclamation-circle"></i> 当前系统仅支持 <strong>Java</strong> 代码文件的检测
+        </div>
+    </div>
+
+
+    <!-- JS 脚本 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const uploadButton = document.getElementById('uploadButton');
+        const fileContainer = document.getElementById('fileContainer');
+
+        fileInput.addEventListener('change', handleFileSelect);
+        uploadButton.addEventListener('click', uploadFiles);
+
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            fileList.innerHTML = '';
+
+            if (files.length === 0) {
+                fileList.innerHTML = '<li class="no-files">暂无文件，请点击下方按钮选择文件</li>';
+                updateUploadButtonState();
+            } else {
+                // 将FileList对象转换为数组以便管理
+                const filesArray = Array.from(files);
+                
+                // 保存文件数组到全局变量，方便后续管理
+                window.selectedFiles = filesArray;
+                
+                renderFileList();
+                
+                // 更新上传按钮状态
+                updateUploadButtonState();
+            }
+        }
+        
+        // 更新上传按钮状态函数
+        function updateUploadButtonState() {
+            const uploadButton = document.getElementById('uploadButton');
+            const uploadStatus = document.getElementById('uploadStatus');
+            
+            // 重置状态
+            uploadButton.disabled = true;
+            uploadButton.classList.remove('error-state');
+            uploadStatus.textContent = '';
+            uploadStatus.classList.remove('error');
+            
+            // 没有选择文件的情况
+            if (!window.selectedFiles || window.selectedFiles.length === 0) {
+                uploadButton.disabled = true;
+                return;
+            }
+            
+            // 检查是否有合法的Java或txt文件
+            const hasValidFile = window.selectedFiles.some(file => 
+                file.name.endsWith('.java') || file.name.endsWith('.txt')
+            );
+            
+            if (hasValidFile) {
+                // 至少有一个合法文件
+                uploadButton.disabled = false;
+            } else {
+                // 全部文件非法
+                uploadButton.disabled = true;
+                uploadButton.classList.add('error-state');
+                uploadStatus.textContent = '请至少选择一个Java或txt文件！';
+                uploadStatus.classList.add('error');
+            }
+        }
+        
+        // 渲染文件列表函数
+        function renderFileList() {
+            fileList.innerHTML = '';
+            
+            if (!window.selectedFiles || window.selectedFiles.length === 0) {
+                fileList.innerHTML = '<li class="no-files">暂无文件，请点击下方按钮选择文件</li>';
+                return;
+            }
+            
+            window.selectedFiles.forEach((file, index) => {
+                const listItem = document.createElement('li');
+                
+                // 判断文件是否为支持的格式
+                const isSupported = file.name.endsWith('.java') || file.name.endsWith('.txt');
+                
+                // 不支持的文件的特殊类
+                if (!isSupported) {
+                    listItem.classList.add('unsupported-file');
+                }
+                
+                // 根据文件类型选择合适的图标
+                let fileIcon = 'far fa-file';
+                if (file.name.endsWith('.java')) {
+                    fileIcon = 'fab fa-java';
+                } else if (file.name.endsWith('.txt')) {
+                    fileIcon = 'far fa-file-alt'; // 文本文件图标
+                } else if (file.name.endsWith('.html')) {
+                    fileIcon = 'fab fa-html5';
+                } else if (file.name.endsWith('.css')) {
+                    fileIcon = 'fab fa-css3-alt';
+                } else if (file.name.endsWith('.js')) {
+                    fileIcon = 'fab fa-js-square';
+                } else if (file.name.endsWith('.py') || file.name.endsWith('.ipynb')) {
+                    fileIcon = 'fab fa-python';
+                } else if (file.name.endsWith('.c') || file.name.endsWith('.h')) {
+                    fileIcon = 'fas fa-code'; // C语言文件
+                } else if (file.name.endsWith('.cpp') || file.name.endsWith('.cc') || 
+                          file.name.endsWith('.cxx') || file.name.endsWith('.hpp')) {
+                    fileIcon = 'fas fa-file-code'; // C++文件
+                } else if (file.name.endsWith('.php')) {
+                    fileIcon = 'fab fa-php';
+                } else if (file.name.endsWith('.rb')) {
+                    fileIcon = 'fas fa-gem'; // Ruby文件
+                } else if (file.name.endsWith('.go')) {
+                    fileIcon = 'fab fa-golang'; // Go语言文件
+                } else if (file.name.endsWith('.ts')) {
+                    fileIcon = 'fab fa-js'; // TypeScript文件
+                }
+                
+                // 使用flex布局重构文件项内容
+                listItem.innerHTML = `
+                    <div class="file-item-content">
+                        <i class="${fileIcon} file-icon"></i>
+                        <span class="file-name" title="${file.name}">${file.name}</span>
+                        <div class="file-badges">
+                            ${!isSupported ? '<span class="unsupported-badge">不支持</span>' : ''}
+                            <i class="fas fa-times file-delete" data-index="${index}"></i>
+                        </div>
+                    </div>
+                `;
+                
+                fileList.appendChild(listItem);
+            });
+            
+            // 删除文件的事件监听
+            document.querySelectorAll('.file-delete').forEach(btn => {
+                btn.addEventListener('click', removeFile);
+            });
+        }
+        
+        // 删除文件函数
+        function removeFile(event) {
+            const index = parseInt(event.target.getAttribute('data-index'));
+            
+            // 从数组中移除指定索引的文件
+            window.selectedFiles.splice(index, 1);
+            
+            // 重新渲染文件列表
+            renderFileList();
+            
+            // 更新上传按钮状态
+            updateUploadButtonState();
+        }
+
+        function uploadFiles() {
+            if (!window.selectedFiles || window.selectedFiles.length === 0) {
+                alert('请先选择文件');
+                return;
+            }
+
+             // 显示加载提示
+            document.getElementById('loadingIndicator').style.display = 'block';
+            
+            const formData = new FormData();
+            for (let i = 0; i < window.selectedFiles.length; i++) {
+                formData.append('file', window.selectedFiles[i]);
+            }
+
+            //原来的服务器地址
+            //const uploadUrl = 'https://ai02.fosu.edu.cn//upcode_file';
+
+            // 根据当前主机动态设置上传地址
+            let uploadUrl = '';
+            if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+                uploadUrl = 'http://127.0.0.1:80/upcode_file';  // 本地调试地址
+            } else {
+                uploadUrl = 'https://ai02.fosu.edu.cn/upcode_file';  // 部署到服务器的地址
+            }
+
+
+            fetch(uploadUrl, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    window.location.href = `${window.location.origin}/static/report.html`;
+                })
+                .catch(error => {
+                    console.error('上传失败：', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
