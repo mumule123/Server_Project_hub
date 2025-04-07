@@ -74,6 +74,30 @@
     .char-level-code {
       display: none;
     }
+    
+    /* 开源占比相关样式 */
+    .plagiarism-stats {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+    }
+    
+    .progress {
+      height: 15px;
+      margin-bottom: 5px;
+    }
+    
+    .stats-label {
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    
+    .stats-value {
+      font-weight: bold;
+      color: #dc3545;
+    }
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 </head>
@@ -145,6 +169,17 @@
   </p>
   <div class="collapse" id="collapse-{{loop.index}}">
     <div class="card card-body">
+      <!-- 添加行级开源占比显示组件 -->
+      <div class="plagiarism-stats">
+        <div class="progress">
+          <div class="progress-bar bg-danger" role="progressbar" style="width: {{ "%.2f"|format(code[7]*100) }}%;" aria-valuenow="{{ "%.2f"|format(code[7]*100) }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <span class="stats-label">开源代码占比:</span>
+        <span class="stats-value">{{ "%.2f"|format(code[7]*100) }}%</span>
+        <span class="stats-formula" title="计算方法: (抄袭代码行数/待检测文件总行数)*100%"><i class="bi bi-info-circle"></i></span>
+        <small class="d-block mt-1 text-muted">(待检测文件总行数: <span id="totalLines-{{loop.index}}">{{ code[8] }}</span>, 抄袭代码行数: <span id="plagiarizedLines-{{loop.index}}">{{ code[9] }}</span>)</small>
+      </div>
+      
       <!-- 添加高亮方式切换按钮 -->
       <div class="highlight-toggle" data-code-id="{{loop.index}}">
         <p class="highlight-mode-description">选择代码高亮方式：</p>
@@ -244,6 +279,13 @@
             document.getElementById(`char-level-code-right-${codeId}`).style.display = 'block';
           }
         }
+        
+        // 页面加载完成后计算和显示行数信息
+        document.addEventListener('DOMContentLoaded', function() {
+            // 由于行数和抄袭率已由后端计算，此处不再需要前端重新计算
+            // 可以在此处添加其他初始化逻辑
+            console.log("页面加载完成，行数数据已由后端提供");
+        });
     </script>
 </body>
 </html>

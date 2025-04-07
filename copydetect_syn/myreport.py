@@ -408,6 +408,50 @@ class Report:
 
         return new_doc, hl_percent
 
+    def calculate_line_coverage(self, doc, slices):
+        """计算代码行级的覆盖比例
+        
+        Parameters
+        ----------
+        doc : str
+            原始代码文本
+        slices : array
+            抄袭代码的切片位置
+            
+        Returns
+        -------
+        tuple
+            (coverage_ratio, total_lines, covered_line_count)
+            - coverage_ratio: 行覆盖率 (抄袭行数/总行数)
+            - total_lines: 总行数
+            - covered_line_count: 抄袭行数
+        """
+        if slices.shape[0] == 0:
+            return 0, 0, 0
+            
+        # 获取总行数
+        total_lines = doc.count('\n') + 1
+        
+        # 标记被抄袭的行
+        covered_lines = set()
+        for slice_idx in range(slices.shape[1]):
+            start_idx = slices[0, slice_idx]
+            end_idx = slices[1, slice_idx]
+            
+            # 计算起始位置在哪一行
+            start_line = doc[:start_idx].count('\n') + 1
+            # 计算结束位置在哪一行
+            end_line = doc[:end_idx].count('\n') + 1
+            
+            # 将所有被覆盖的行添加到集合中
+            for line_num in range(start_line, end_line + 1):
+                covered_lines.add(line_num)
+        
+        # 计算覆盖率和抄袭行数
+        covered_line_count = len(covered_lines)
+        coverage_ratio = covered_line_count / total_lines if total_lines > 0 else 0
+        return coverage_ratio, total_lines, covered_line_count
+
     def get_copied_code_list(self, highlight_method="default"):
         """获取抄袭代码列表，并按指定方法进行高亮
         
@@ -471,10 +515,15 @@ class Report:
                     truncate=truncate, escape_html=True)
 
             overlap = self.token_overlap_matrix[x[idx], y[idx]]
+            
+            # 计算代码行级开源占比
+            coverage_ratio, total_lines, covered_lines = self.calculate_line_coverage(
+                self.file_data[test_f].raw_code, slices_test)
 
-            # 添加高亮方法标记
+            # 添加高亮方法标记和行级开源占比数据
             code_list.append([test_sim, ref_sim, test_f, ref_f,
-                              hl_code_1, hl_code_2, overlap, highlight_method])
+                              hl_code_1, hl_code_2, overlap, 
+                              coverage_ratio, total_lines, covered_lines])
 
         code_list.sort(key=lambda x: -x[0])
         return code_list
@@ -502,7 +551,6 @@ class Report:
                 combined_code_list.append(combined_item)
 
         data_dir = current_dir+"/templates/"
-        # 原来路径: r"/usr/t-3058/detect/sys/copydetect/templates/"
         # 生成相似度矩阵图像
         plot_mtx = np.copy(self.similarity_matrix[:, :, 0])
         plot_mtx[plot_mtx == -1] = np.nan
