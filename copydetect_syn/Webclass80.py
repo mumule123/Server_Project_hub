@@ -211,7 +211,7 @@ def upload_file():
             # 跑程序得到结果
             data = calc.get_check_params(pairs_path, upload_folder, search_folder)  # 调用类中的add方法
             print(data)
-            code_main.mymain([upload_folder], [search_folder],data)   #进行进行 代码对比分析
+            code_main.mymain([upload_folder], [search_folder], data)  # 进行代码对比分析
             
             return render_template_string("{file_contents}", file_contents="./report.html")
 

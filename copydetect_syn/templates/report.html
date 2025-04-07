@@ -26,6 +26,30 @@
       max-height: 900px;
       overflow-y: scroll;
     }
+    
+    /* 高亮方式切换按钮样式 */
+    .highlight-toggle {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .highlight-toggle button {
+      padding: 5px 10px;
+      margin-right: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .highlight-toggle button.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    
+    /* 隐藏非当前显示的代码版本 */
+    .char-level-code {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -96,12 +120,24 @@
   </p>
   <div class="collapse" id="collapse-{{loop.index}}">
     <div class="card card-body">
+      <!-- 添加高亮方式切换按钮 -->
+      <div class="highlight-toggle" data-code-id="{{loop.index}}">
+        <button class="default-highlight active" onclick="switchHighlight('{{loop.index}}', 'default')">默认高亮方式</button>
+        <button class="char-level-highlight" onclick="switchHighlight('{{loop.index}}', 'char-level')">字符级高亮方式</button>
+      </div>
+      
       <div class="row">
         <div class="col" style="max-width: 600px">
-          <pre><code>{{ code[4] }}</code></pre>
+          <!-- 默认高亮代码 -->
+          <pre class="default-code" id="default-code-left-{{loop.index}}"><code>{{ code[4] }}</code></pre>
+          <!-- 字符级高亮代码 -->
+          <pre class="char-level-code" id="char-level-code-left-{{loop.index}}"><code>{{ code[8] }}</code></pre>
         </div>
         <div class="col" style="max-width: 600px">
-          <pre><code>{{ code[5] }}</code></pre>
+          <!-- 默认高亮代码 -->
+          <pre class="default-code" id="default-code-right-{{loop.index}}"><code>{{ code[5] }}</code></pre>
+          <!-- 字符级高亮代码 -->
+          <pre class="char-level-code" id="char-level-code-right-{{loop.index}}"><code>{{ code[9] }}</code></pre>
         </div>
       </div>
     </div>
@@ -145,6 +181,28 @@
             // 释放 URL 对象
             URL.revokeObjectURL(url);
         });
+
+        // 切换高亮方式的函数
+        function switchHighlight(codeId, mode) {
+          // 更新按钮状态
+          document.querySelectorAll(`.highlight-toggle[data-code-id="${codeId}"] button`).forEach(btn => {
+            btn.classList.remove('active');
+          });
+          document.querySelector(`.highlight-toggle[data-code-id="${codeId}"] .${mode}-highlight`).classList.add('active');
+          
+          // 切换代码显示
+          if (mode === 'default') {
+            document.getElementById(`default-code-left-${codeId}`).style.display = 'block';
+            document.getElementById(`default-code-right-${codeId}`).style.display = 'block';
+            document.getElementById(`char-level-code-left-${codeId}`).style.display = 'none';
+            document.getElementById(`char-level-code-right-${codeId}`).style.display = 'none';
+          } else {
+            document.getElementById(`default-code-left-${codeId}`).style.display = 'none';
+            document.getElementById(`default-code-right-${codeId}`).style.display = 'none';
+            document.getElementById(`char-level-code-left-${codeId}`).style.display = 'block';
+            document.getElementById(`char-level-code-right-${codeId}`).style.display = 'block';
+          }
+        }
     </script>
 </body>
 </html>

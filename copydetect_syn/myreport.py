@@ -324,7 +324,107 @@ class Report:
 
         return new_doc, hl_percent
 
-    def get_copied_code_list(self):
+    def highlight_overlap_char_level(self, doc1, doc2, left_hl, right_hl, escape_html=False):
+        """使用字符级别比较来高亮显示相似代码
+        
+        通过直接比较原始字符串，找出最长公共子串进行高亮
+        """
+        if not doc1 or not doc2:
+            return doc1, 0
+        
+        # 预处理文档，去除空白字符以便更好地匹配
+        def preprocess_doc(doc):
+            # 保留换行符以保持代码结构，但移除多余空格
+            lines = doc.splitlines()
+            processed_lines = [line.strip() for line in lines]
+            return '\n'.join(processed_lines)
+        
+        processed_doc1 = preprocess_doc(doc1)
+        processed_doc2 = preprocess_doc(doc2)
+        
+        # 使用最长公共子串算法找出相似片段
+        def find_longest_common_substrings(s1, s2, min_length=10):
+            """找出两个字符串中所有长度大于min_length的公共子串"""
+            result = []
+            # 构建二维数组来存储公共子串长度
+            m, n = len(s1), len(s2)
+            dp = [[0 for _ in range(n+1)] for _ in range(m+1)]
+            
+            # 找出所有公共子串
+            for i in range(1, m+1):
+                for j in range(1, n+1):
+                    if s1[i-1] == s2[j-1]:
+                        dp[i][j] = dp[i-1][j-1] + 1
+                        if dp[i][j] >= min_length:
+                            # 回溯找出完整的子串
+                            length = dp[i][j]
+                            substring = s1[i-length:i]
+                            # 检查是否已经存在包含此子串的更长子串
+                            is_contained = False
+                            for existing in result[:]:
+                                if substring in existing[0]:
+                                    is_contained = True
+                                    break
+                                elif existing[0] in substring:
+                                    result.remove(existing)
+                            if not is_contained:
+                                result.append((substring, i-length, i, j-length, j))
+            
+            # 按长度排序以优先处理较长的公共子串
+            result.sort(key=lambda x: -len(x[0]))
+            return result
+        
+        # 找出公共子串
+        common_substrings = find_longest_common_substrings(processed_doc1, processed_doc2)
+        
+        # 标记需要高亮的区域
+        highlight_regions = []
+        for substring, start1, end1, _, _ in common_substrings:
+            # 在原始文档中找到对应位置
+            orig_start = processed_doc1.find(substring, 0 if not highlight_regions else highlight_regions[-1][1])
+            if orig_start != -1:
+                highlight_regions.append((orig_start, orig_start + len(substring)))
+        
+        # 应用高亮
+        highlight_regions.sort()
+        new_doc = ""
+        current_idx = 0
+        
+        for start, end in highlight_regions:
+            if start < current_idx:  # 跳过重叠区域
+                continue
+                
+            if escape_html:
+                pre_highlight = str(escape(doc1[current_idx:start]))
+                highlighted = left_hl + str(escape(doc1[start:end])) + right_hl
+            else:
+                pre_highlight = doc1[current_idx:start]
+                highlighted = left_hl + doc1[start:end] + right_hl
+                
+            new_doc += pre_highlight + highlighted
+            current_idx = end
+        
+        # 添加最后一部分
+        if escape_html:
+            post_highlight = str(escape(doc1[current_idx:]))
+        else:
+            post_highlight = doc1[current_idx:]
+        new_doc += post_highlight
+        
+        # 计算高亮百分比
+        hl_chars = sum(end - start for start, end in highlight_regions)
+        hl_percent = hl_chars / len(doc1) if len(doc1) > 0 else 0
+        
+        return new_doc, hl_percent
+
+    def get_copied_code_list(self, highlight_method="default"):
+        """获取抄袭代码列表，并按指定方法进行高亮
+        
+        Parameters
+        ----------
+        highlight_method : str
+            高亮方法，可以是 "default"（默认方法）或 "char_level"（字符级方法）
+        """
         if len(self.similarity_matrix) == 0:
             logging.error("Cannot generate code list: no files compared")
             return []
@@ -342,96 +442,131 @@ class Report:
 
             test_sim = self.similarity_matrix[x[idx], y[idx], 0]
             ref_sim = self.similarity_matrix[x[idx], y[idx], 1]
+            
             if (test_f, ref_f) in self.slice_matrix:
                 slices_test = self.slice_matrix[(test_f, ref_f)][0]
                 slices_ref = self.slice_matrix[(test_f, ref_f)][1]
             else:
-                 continue
-
+                slices_test = self.slice_matrix[(ref_f, test_f)][1]
+                slices_ref = self.slice_matrix[(ref_f, test_f)][0]
 
             if self.conf.truncate:
                 truncate = 10
             else:
                 truncate = -1
-            # 3.2调用higtlight_overlap_1方法获得高亮代码 
-            hl_code_1, _ = self.highlight_overlap_1(
-                self.file_data[test_f].raw_code, slices_test,
-                "<span class='highlight-red'>", "</span>",
-                truncate=truncate, escape_html=True)
-            hl_code_2, _ = self.highlight_overlap_2(
-                self.file_data[ref_f].raw_code, slices_ref,
-                "<span class='highlight-green'>", "</span>",
-                truncate=truncate, escape_html=True)
+                
+            # 根据选择的高亮方法应用不同的高亮
+            if highlight_method == "char_level":
+                # 使用字符级别比较高亮
+                hl_code_1, _ = self.highlight_overlap_char_level(
+                    self.file_data[test_f].raw_code, 
+                    self.file_data[ref_f].raw_code,
+                    "<span class='highlight-red'>", "</span>",
+                    escape_html=True)
+                hl_code_2, _ = self.highlight_overlap_char_level(
+                    self.file_data[ref_f].raw_code,
+                    self.file_data[test_f].raw_code,
+                    "<span class='highlight-green'>", "</span>",
+                    escape_html=True)
+            else:
+                # 使用默认方法高亮
+                hl_code_1, _ = self.highlight_overlap_1(
+                    self.file_data[test_f].raw_code, slices_test,
+                    "<span class='highlight-red'>", "</span>",
+                    truncate=truncate, escape_html=True)
+                hl_code_2, _ = self.highlight_overlap_2(
+                    self.file_data[ref_f].raw_code, slices_ref,
+                    "<span class='highlight-green'>", "</span>",
+                    truncate=truncate, escape_html=True)
+            
             overlap = self.token_overlap_matrix[x[idx], y[idx]]
-            # 前端被渲染的code值
+            
+            # 添加高亮方法标记
             code_list.append([test_sim, ref_sim, test_f, ref_f,
-                              hl_code_1, hl_code_2, overlap])
+                              hl_code_1, hl_code_2, overlap, highlight_method])
 
         code_list.sort(key=lambda x: -x[0])
-    
         return code_list
     
     
     def generate_html_report(self, output_mode="save"):
-            if len(self.similarity_matrix) == 0:
-                logging.error("Cannot generate report: no files compared")
-                return
-            # 3.1调用get_copied_code_list方法获得代码列表
-            code_list = self.get_copied_code_list()
-            data_dir = current_dir+"/templates/"
-            # 原来路径： r"/usr/t-3058/detect/sys/copydetect/templates/"
-            plot_mtx = np.copy(self.similarity_matrix[:, :, 0])
-            plot_mtx[plot_mtx == -1] = np.nan
-            plt.imshow(plot_mtx)
-            plt.colorbar()
-            plt.tight_layout()
-            sim_mtx_buffer = io.BytesIO()
-            plt.savefig(sim_mtx_buffer)
-            sim_mtx_buffer.seek(0)
-            sim_mtx_base64 = base64.b64encode(sim_mtx_buffer.read()).decode()
-            plt.close()
+        if len(self.similarity_matrix) == 0:
+            logging.error("Cannot generate report: no files compared")
+            return
+        
+        # 生成两种高亮方式的代码列表
+        default_code_list = self.get_copied_code_list("default")
+        char_level_code_list = self.get_copied_code_list("char_level")
+        
+        # 将两种代码列表合并到一个数据结构中
+        combined_code_list = []
+        for i, default_item in enumerate(default_code_list):
+            # 找到对应的字符级高亮项
+            matching_char_item = next((item for item in char_level_code_list 
+                                      if item[2] == default_item[2] and item[3] == default_item[3]), None)
+            if matching_char_item:
+                # 合并两种高亮方式的代码
+                combined_item = default_item.copy()
+                combined_item.append(matching_char_item[4])  # 添加字符级高亮版本的代码1
+                combined_item.append(matching_char_item[5])  # 添加字符级高亮版本的代码2
+                combined_code_list.append(combined_item)
+        
+        data_dir = current_dir+"/templates/"
+    # 原来路径: r"/usr/t-3058/detect/sys/copydetect/templates/"   
+        # 生成相似度矩阵图像
+        plot_mtx = np.copy(self.similarity_matrix[:, :, 0])
+        plot_mtx[plot_mtx == -1] = np.nan
+        plt.imshow(plot_mtx)
+        plt.colorbar()
+        plt.tight_layout()
+        sim_mtx_buffer = io.BytesIO()
+        plt.savefig(sim_mtx_buffer)
+        sim_mtx_buffer.seek(0)
+        sim_mtx_base64 = base64.b64encode(sim_mtx_buffer.read()).decode()
+        plt.close()
+        
+        # 生成相似度分布直方图
+        scores = self.similarity_matrix[:, :, 0][self.similarity_matrix[:, :, 0] != -1]
+        plt.hist(scores, bins=20)
+        plt.tight_layout()
+        sim_hist_buffer = io.BytesIO()
+        plt.savefig(sim_hist_buffer)
+        sim_hist_buffer.seek(0)
+        sim_hist_base64 = base64.b64encode(sim_hist_buffer.read()).decode()
+        plt.close()
 
-            scores = self.similarity_matrix[:, :, 0][self.similarity_matrix[:, :, 0] != -1]
-            plt.hist(scores, bins=20)
-            plt.tight_layout()
-            sim_hist_buffer = io.BytesIO()
-            plt.savefig(sim_hist_buffer)
-            sim_hist_buffer.seek(0)
-            sim_hist_base64 = base64.b64encode(sim_hist_buffer.read()).decode()
-            plt.close()
+        # 渲染模板
+        with open(data_dir + "report.html", encoding="utf-8") as template_fp:
+            template = Template(template_fp.read())
 
-            # render template with jinja and save as html
-            with open(data_dir + "report.html", encoding="utf-8") as template_fp:
-                template = Template(template_fp.read())
+        flagged = self.similarity_matrix[:, :, 0] > self.conf.display_t
+        flagged_file_count = np.sum(np.any(flagged, axis=1))
 
-            flagged = self.similarity_matrix[:, :, 0] > self.conf.display_t
-            flagged_file_count = np.sum(np.any(flagged, axis=1))
+        formatted_conf = json.dumps(self.conf.to_json(), indent=4)
+        output = template.render(config_params=formatted_conf,
+                                 version=1.0,
+                                 test_count=len(self.test_files),
+                                 test_files=self.test_files,
+                                 compare_count=len(self.ref_files),
+                                 compare_files=self.ref_files,
+                                 flagged_file_count=flagged_file_count,
+                                 code_list=combined_code_list,
+                                 sim_mtx_base64=sim_mtx_base64,
+                                 sim_hist_base64=sim_hist_base64)
 
-            formatted_conf = json.dumps(self.conf.to_json(), indent=4)
-            output = template.render(config_params=formatted_conf,
-                                     version=1.0,
-                                     test_count=len(self.test_files),
-                                     test_files=self.test_files,
-                                     compare_count=len(self.ref_files),
-                                     compare_files=self.ref_files,
-                                     flagged_file_count=flagged_file_count,
-                                     code_list=code_list,
-                                     sim_mtx_base64=sim_mtx_base64,
-                                     sim_hist_base64=sim_hist_base64)
+        if output_mode == "save":
+            with open(self.conf.out_file, "w", encoding="utf-8") as report_f:
+                report_f.write(output)
 
-            if output_mode == "save":
-                with open(self.conf.out_file, "w", encoding="utf-8") as report_f:
-                    report_f.write(output)
-
-                if not self.conf.silent:
-                    print(
-                        f"Output saved to {self.conf.out_file.replace('//', '/')}"
-                    )
-                if self.conf.autoopen:
-                    webbrowser.open(
-                        'file://' + str(Path(self.conf.out_file).resolve())
-                    )
-            elif output_mode == "return":
-                return output
-            else:
-                raise ValueError("output_mode not supported")
+            if not self.conf.silent:
+                print(
+                    f"Output saved to {self.conf.out_file.replace('//', '/')}"
+                )
+            if self.conf.autoopen:
+                webbrowser.open(
+                    'file://' + str(Path(self.conf.out_file).resolve())
+                )
+        elif output_mode == "return":
+            return output
+        else:
+            raise ValueError("output_mode not supported")
