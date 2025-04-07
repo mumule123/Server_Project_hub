@@ -205,7 +205,7 @@ def upload_file():
                 # seven_digit_number = str(number).zfill(6)
                 pre_name = name.replace(".txt", "")
                 # print(seven_digit_number)
-                result = re.search("\d+", name)
+                result = re.search(r"\d+", name)
                 number = int(result.group())
 
                 with open(
