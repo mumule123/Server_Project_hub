@@ -1,0 +1,15 @@
+# pycharm的缓存
+copydetect_syn/__pycache__/
+
+# 检测文件的临时目录
+copydetect_syn/downs/
+copydetect_syn/uploads/
+
+# 检测样本对的临时目录
+/pairs
+
+# 反编译文件夹
+copydetect_syn/maven-check
+
+# VSCode
+.vscode/
