@@ -49,9 +49,9 @@ class CodeFingerprint:
         self.filename = file
         self.raw_code = code
         self.k = k
-        
+
 class Report:
- 
+
     def __init__(self, test_dirs=None, ref_dirs=None,
                  boilerplate_dirs=None, extensions=None,
                  noise_t=defaults.NOISE_THRESHOLD,
@@ -97,8 +97,6 @@ class Report:
                     logging.warning(f"Skipping {code_f}: file not UTF-8 text")
                     continue
 
-
-    
     @classmethod
     def from_config(cls, config):
         params = CopydetectConfig.normalize_json(config)
@@ -123,39 +121,36 @@ class Report:
 
         # convert to a set to remove duplicates, then back to a list
         return list(set(file_list))
-        
-        
+
         # 改4
     def get_copied_slices(self, features: dict, feature_name: str):
-            slices1_offset = []
-            slices2_offset = []
+        slices1_offset = []
+        slices2_offset = []
 
-            slices1_length = []
-            slices2_length = []
+        slices1_length = []
+        slices2_length = []
 
-            fe = features[feature_name]
-            # print(f"[DEBUG] Checking feature: {feature_name}")
-            for vv in fe:
-                v = fe[vv]
-                # print(f"[PAIR] Suspicious: offset={v['offset']}, length={v['length']} | "
-                #     f"Source: offset={v['srcOffset']}, length={v['srcLength']}")
+        fe = features[feature_name]
+        # print(f"[DEBUG] Checking feature: {feature_name}")
+        for vv in fe:
+            v = fe[vv]
+            # print(f"[PAIR] Suspicious: offset={v['offset']}, length={v['length']} | "
+            #     f"Source: offset={v['srcOffset']}, length={v['srcLength']}")
 
-                slices1_offset.append(v['offset'])
-                slices1_length.append(v['length'])
+            slices1_offset.append(v['offset'])
+            slices1_length.append(v['length'])
 
-                slices2_offset.append(v['srcOffset'])
-                slices2_length.append(v['srcLength'])
+            slices2_offset.append(v['srcOffset'])
+            slices2_length.append(v['srcLength'])
 
-            # offset + length = end
-            slices1_end = np.array(slices1_offset) + np.array(slices1_length)
-            slices2_end = np.array(slices2_offset) + np.array(slices2_length)
+        # offset + length = end
+        slices1_end = np.array(slices1_offset) + np.array(slices1_length)
+        slices2_end = np.array(slices2_offset) + np.array(slices2_length)
 
-            slices1 = np.array([slices1_offset, slices1_end])
-            slices2 = np.array([slices2_offset, slices2_end])
-            return slices1, slices2
+        slices1 = np.array([slices1_offset, slices1_end])
+        slices2 = np.array([slices2_offset, slices2_end])
+        return slices1, slices2
 
-        
-        
     def compare_files(self,feature,feature_name):
         slices1, slices2 = self.get_copied_slices(feature,feature_name)
         # slices2 = self.get_copied_slices(idx2, file2_data.k)
@@ -175,9 +170,7 @@ class Report:
             similarity2 = 0
 
         return token_overlap1, (similarity1, similarity2), (slices1, slices2)
-    
-    
-    
+
     # 第二步被调用的run方法
     """ha:{    src是数据库源码头代码   sus是上传的可疑代码
     "suspicious-document000003.javasource-document1260833.java": {
@@ -254,11 +247,10 @@ class Report:
                                      + "\n".join(lines[-truncate - 1:]))
                 elif len(lines) > truncate:
                     pre_highlight = "\n".join(lines[-truncate - 1:])
-            
+
             new_doc += pre_highlight
             new_doc += highlighted
 
-            
             current_idx = end_idx
 
         if escape_html:
@@ -304,11 +296,10 @@ class Report:
                                      + "\n".join(lines[-truncate - 1:]))
                 elif len(lines) > truncate:
                     pre_highlight = "\n".join(lines[-truncate - 1:])
-            
+
             new_doc += pre_highlight
             new_doc += highlighted
 
-            
             current_idx = end_idx
 
         if escape_html:
@@ -331,17 +322,17 @@ class Report:
         """
         if not doc1 or not doc2:
             return doc1, 0
-        
+
         # 预处理文档，去除空白字符以便更好地匹配
         def preprocess_doc(doc):
             # 保留换行符以保持代码结构，但移除多余空格
             lines = doc.splitlines()
             processed_lines = [line.strip() for line in lines]
             return '\n'.join(processed_lines)
-        
+
         processed_doc1 = preprocess_doc(doc1)
         processed_doc2 = preprocess_doc(doc2)
-        
+
         # 使用最长公共子串算法找出相似片段
         def find_longest_common_substrings(s1, s2, min_length=10):
             """找出两个字符串中所有长度大于min_length的公共子串"""
@@ -349,7 +340,7 @@ class Report:
             # 构建二维数组来存储公共子串长度
             m, n = len(s1), len(s2)
             dp = [[0 for _ in range(n+1)] for _ in range(m+1)]
-            
+
             # 找出所有公共子串
             for i in range(1, m+1):
                 for j in range(1, n+1):
@@ -369,14 +360,14 @@ class Report:
                                     result.remove(existing)
                             if not is_contained:
                                 result.append((substring, i-length, i, j-length, j))
-            
+
             # 按长度排序以优先处理较长的公共子串
             result.sort(key=lambda x: -len(x[0]))
             return result
-        
+
         # 找出公共子串
         common_substrings = find_longest_common_substrings(processed_doc1, processed_doc2)
-        
+
         # 标记需要高亮的区域
         highlight_regions = []
         for substring, start1, end1, _, _ in common_substrings:
@@ -384,37 +375,37 @@ class Report:
             orig_start = processed_doc1.find(substring, 0 if not highlight_regions else highlight_regions[-1][1])
             if orig_start != -1:
                 highlight_regions.append((orig_start, orig_start + len(substring)))
-        
+
         # 应用高亮
         highlight_regions.sort()
         new_doc = ""
         current_idx = 0
-        
+
         for start, end in highlight_regions:
             if start < current_idx:  # 跳过重叠区域
                 continue
-                
+
             if escape_html:
                 pre_highlight = str(escape(doc1[current_idx:start]))
                 highlighted = left_hl + str(escape(doc1[start:end])) + right_hl
             else:
                 pre_highlight = doc1[current_idx:start]
                 highlighted = left_hl + doc1[start:end] + right_hl
-                
+
             new_doc += pre_highlight + highlighted
             current_idx = end
-        
+
         # 添加最后一部分
         if escape_html:
             post_highlight = str(escape(doc1[current_idx:]))
         else:
             post_highlight = doc1[current_idx:]
         new_doc += post_highlight
-        
+
         # 计算高亮百分比
         hl_chars = sum(end - start for start, end in highlight_regions)
         hl_percent = hl_chars / len(doc1) if len(doc1) > 0 else 0
-        
+
         return new_doc, hl_percent
 
     def get_copied_code_list(self, highlight_method="default"):
@@ -442,7 +433,7 @@ class Report:
 
             test_sim = self.similarity_matrix[x[idx], y[idx], 0]
             ref_sim = self.similarity_matrix[x[idx], y[idx], 1]
-            
+
             if (test_f, ref_f) in self.slice_matrix:
                 slices_test = self.slice_matrix[(test_f, ref_f)][0]
                 slices_ref = self.slice_matrix[(test_f, ref_f)][1]
@@ -454,7 +445,7 @@ class Report:
                 truncate = 10
             else:
                 truncate = -1
-                
+
             # 根据选择的高亮方法应用不同的高亮
             if highlight_method == "char_level":
                 # 使用字符级别比较高亮
@@ -478,26 +469,25 @@ class Report:
                     self.file_data[ref_f].raw_code, slices_ref,
                     "<span class='highlight-green'>", "</span>",
                     truncate=truncate, escape_html=True)
-            
+
             overlap = self.token_overlap_matrix[x[idx], y[idx]]
-            
+
             # 添加高亮方法标记
             code_list.append([test_sim, ref_sim, test_f, ref_f,
                               hl_code_1, hl_code_2, overlap, highlight_method])
 
         code_list.sort(key=lambda x: -x[0])
         return code_list
-    
-    
+
     def generate_html_report(self, output_mode="save"):
         if len(self.similarity_matrix) == 0:
             logging.error("Cannot generate report: no files compared")
             return
-        
+
         # 生成两种高亮方式的代码列表
         default_code_list = self.get_copied_code_list("default")
         char_level_code_list = self.get_copied_code_list("char_level")
-        
+
         # 将两种代码列表合并到一个数据结构中
         combined_code_list = []
         for i, default_item in enumerate(default_code_list):
@@ -510,9 +500,9 @@ class Report:
                 combined_item.append(matching_char_item[4])  # 添加字符级高亮版本的代码1
                 combined_item.append(matching_char_item[5])  # 添加字符级高亮版本的代码2
                 combined_code_list.append(combined_item)
-        
+
         data_dir = current_dir+"/templates/"
-    # 原来路径: r"/usr/t-3058/detect/sys/copydetect/templates/"   
+        # 原来路径: r"/usr/t-3058/detect/sys/copydetect/templates/"
         # 生成相似度矩阵图像
         plot_mtx = np.copy(self.similarity_matrix[:, :, 0])
         plot_mtx[plot_mtx == -1] = np.nan
@@ -524,7 +514,7 @@ class Report:
         sim_mtx_buffer.seek(0)
         sim_mtx_base64 = base64.b64encode(sim_mtx_buffer.read()).decode()
         plt.close()
-        
+
         # 生成相似度分布直方图
         scores = self.similarity_matrix[:, :, 0][self.similarity_matrix[:, :, 0] != -1]
         plt.hist(scores, bins=20)
