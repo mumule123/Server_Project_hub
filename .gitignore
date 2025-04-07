@@ -13,3 +13,6 @@ copydetect_syn/maven-check
 
 # VSCode
 .vscode/
+
+# 检测报告html文件
+copydetect_syn/static/report.html
