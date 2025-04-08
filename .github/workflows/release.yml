@@ -35,13 +35,20 @@ jobs:
 
         # ✅ 以上排除了不必要的文件，但不会排除 CHANGELOG.MD，无需额外处理
 
+    - name: 📖 Read CHANGELOG.MD content
+      id: changelog
+      run: |
+        changelog_content=$(cat CHANGELOG.MD)
+        echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_ENV
+        echo "$changelog_content" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
     - name: 🚀 Upload release asset to GitHub
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ env.TAG_NAME }}
         name: Release ${{ env.TAG_NAME }}
-        body: |
-          🎉 手动更新日志请查看 CHANGELOG.MD 文件
+        body: ${{ env.CHANGELOG_CONTENT }}
         files: ${{ env.ZIP_NAME }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
