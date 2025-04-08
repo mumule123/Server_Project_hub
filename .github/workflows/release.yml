@@ -1,0 +1,47 @@
+name: Auto Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # 只有以 v 开头的 tag 会触发，如 v1.0.0
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: ⬇️ Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🧾 Get project name and version
+      id: vars
+      run: |
+        repo_name=$(basename $GITHUB_REPOSITORY)
+        tag_name=${GITHUB_REF#refs/tags/}
+        zip_name="${repo_name}-${tag_name}.zip"
+        echo "ZIP_NAME=$zip_name" >> $GITHUB_ENV
+        echo "TAG_NAME=$tag_name" >> $GITHUB_ENV
+
+    - name: 📦 Create zip file including CHANGELOG.MD
+      run: |
+        zip -r "$ZIP_NAME" . \
+          -x ".gitignore" \
+             ".gitattributes" \
+             ".git/*" \
+             ".github/*" \
+             ".gitmodules"
+
+        # ✅ 以上排除了不必要的文件，但不会排除 CHANGELOG.MD，无需额外处理
+
+    - name: 🚀 Upload release asset to GitHub
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ env.TAG_NAME }}
+        name: Release ${{ env.TAG_NAME }}
+        body: |
+          🎉 手动更新日志请查看 CHANGELOG.MD 文件
+        files: ${{ env.ZIP_NAME }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -4,3 +4,5 @@
 4.运行Webclass80.py文件  
 5.在浏览器搜索：http://127.0.0.1/static/fileyploda80.html 地址  
 6.上传待检索代码（sys_test目录下有测试文件）  
+  
+📄 [查看更新日志（CHANGELOG.MD）](CHANGELOG.MD)
