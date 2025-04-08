@@ -490,29 +490,27 @@ class Report:
             else:
                 truncate = -1
 
-            # 根据选择的高亮方法应用不同的高亮
-            if highlight_method == "char_level":
-                # 使用字符级别比较高亮
-                hl_code_1, _ = self.highlight_overlap_char_level(
-                    self.file_data[test_f].raw_code, 
-                    self.file_data[ref_f].raw_code,
-                    "<span class='highlight-red'>", "</span>",
-                    escape_html=True)
-                hl_code_2, _ = self.highlight_overlap_char_level(
-                    self.file_data[ref_f].raw_code,
-                    self.file_data[test_f].raw_code,
-                    "<span class='highlight-green'>", "</span>",
-                    escape_html=True)
-            else:
-                # 使用默认方法高亮
-                hl_code_1, _ = self.highlight_overlap_1(
-                    self.file_data[test_f].raw_code, slices_test,
-                    "<span class='highlight-red'>", "</span>",
-                    truncate=truncate, escape_html=True)
-                hl_code_2, _ = self.highlight_overlap_2(
-                    self.file_data[ref_f].raw_code, slices_ref,
-                    "<span class='highlight-green'>", "</span>",
-                    truncate=truncate, escape_html=True)
+            # 使用默认方法高亮
+            hl_code_1, _ = self.highlight_overlap_1(
+                self.file_data[test_f].raw_code, slices_test,
+                "<span class='highlight-red'>", "</span>",
+                truncate=truncate, escape_html=True)
+            hl_code_2, _ = self.highlight_overlap_2(
+                self.file_data[ref_f].raw_code, slices_ref,
+                "<span class='highlight-green'>", "</span>",
+                truncate=truncate, escape_html=True)
+                
+            # 使用字符级别比较高亮
+            char_level_1, _ = self.highlight_overlap_char_level(
+                self.file_data[test_f].raw_code, 
+                self.file_data[ref_f].raw_code,
+                "<span class='highlight-red'>", "</span>",
+                escape_html=True)
+            char_level_2, _ = self.highlight_overlap_char_level(
+                self.file_data[ref_f].raw_code,
+                self.file_data[test_f].raw_code,
+                "<span class='highlight-green'>", "</span>",
+                escape_html=True)
 
             overlap = self.token_overlap_matrix[x[idx], y[idx]]
             
@@ -520,10 +518,11 @@ class Report:
             coverage_ratio, total_lines, covered_lines = self.calculate_line_coverage(
                 self.file_data[test_f].raw_code, slices_test)
 
-            # 添加高亮方法标记和行级开源占比数据
+            # 将两种高亮方式的代码都添加到code_list中
             code_list.append([test_sim, ref_sim, test_f, ref_f,
                               hl_code_1, hl_code_2, overlap, 
-                              coverage_ratio, total_lines, covered_lines])
+                              coverage_ratio, total_lines, covered_lines,
+                              char_level_1, char_level_2])  # 添加字符级高亮结果
 
         code_list.sort(key=lambda x: -x[0])
         return code_list
