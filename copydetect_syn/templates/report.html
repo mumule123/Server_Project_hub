@@ -417,8 +417,8 @@
             fetch('/down_word')  // 使用 GET 请求
                 .then(response => response.json())
                 .then(data => {
-                    // 如果成功，可以在此处理返回的数据
-                    alert('Word 格式导出功能已启动，正在生成报告！');
+                    // 如果成功，直接在网页进行下载
+                    
                 })
                 .catch(error => {
                     console.error('下载过程中出错:', error);

@@ -561,15 +561,22 @@ class Report:
                 combined_item.append(matching_char_item[5])  # 添加字符级高亮版本的代码2
                 combined_code_list.append(combined_item)
 
-        # 保存需要的代码值到全局变量
+    # 保存需要的代码值到全局变量
         stored_code_values = []
-        for item in combined_code_list:
-            stored_code_values.append({
-                'code7': item[7],  # coverage_ratio
-                'code8': item[8],  # total_lines
-                'code9': item[9],  # covered_lines
-                'code10': item[10]  # char_level_1
-            })
+        # 检查 combined_code_list 是否为空
+        if combined_code_list:
+            # 遍历 combined_code_list 而不是 combined_item
+            for item in combined_code_list:
+                stored_code_values.append({
+                    'code0': float(item[0]),  # 转换为普通 Python float
+                    'code1': float(item[1]),  # 转换为普通 Python float
+                    'code2': str(item[2]),    # 文件路径应该是字符串
+                    'code3': str(item[3]),    # 文件路径应该是字符串
+                    'code6': int(item[6]),    # 转换为普通 Python int
+                    'code7': float(item[7]),  # 转换为普通 Python float
+                    'code8': int(item[8]),    # 转换为普通 Python int
+                    'code9': int(item[9]),    # 转换为普通 Python int
+                })
 
         data_dir = current_dir+"/templates/"
         # 生成相似度矩阵图像

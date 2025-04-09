@@ -15,7 +15,7 @@ import code_main
 from flask_cors import CORS
 import jpype
 import os
-
+import generate_report
 
 import util
 import threading
@@ -29,6 +29,7 @@ CORS(app)
 
 
 calc = None  # 传入所需参数
+data = None  # 用于存储upcode_file方法中的data，供down_word方法使用
 
 
 @app.route("/")
@@ -80,27 +81,14 @@ def serve_report():
 @app.route("/down_word", methods=["GET"])  # 使用 GET 请求
 def down_word():
     print("目前进入了报告后端页面")
+    global data
     
     # 从myreport.py中获取保存的代码值
     from myreport import stored_code_values
-    
-    # DEBUG: 打印获取到的值
-    print("DEBUG: 从myreport.py获取的代码值:")
-    if stored_code_values is None:
-        print("DEBUG: 没有找到保存的代码值")
-        return jsonify({
-            "message": "没有可用的代码值",
-            "status": "error"
-        }), 404
-    
-    print(f"DEBUG: 获取到 {len(stored_code_values)} 个代码值")
-    for idx, value in enumerate(stored_code_values):
-        print(f"\nDEBUG: 第{idx+1}个值:")
-        print(f"DEBUG: code7: {value['code7']}")
-        print(f"DEBUG: code8: {value['code8']}")
-        print(f"DEBUG: code9: {value['code9']}")
-        print(f"DEBUG: code10 长度: {len(str(value['code10']))} 字符")
-    
+    if data is not None:
+        generate_report.create_government_blockchain_report(stored_code_values, data)
+    else:
+        print("警告：data为空，无法生成报告")
     # 返回JSON响应
     return jsonify({
         "message": "Word 报告生成中...",
@@ -114,6 +102,7 @@ def down_word():
 # 上传文件
 @app.route("/upcode_file", methods=["POST"])
 def upload_file():
+    global data
     print("进入了")
     htmlres = """<!doctype html>
     <title>文件上传</title>
