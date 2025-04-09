@@ -262,6 +262,10 @@
         <button id="downloadWordButton">
           <i class="bi bi-filetype-docx"></i> 下载 Word 格式
         </button>
+        <div class="dropdown-divider"></div>
+        <button id="downloadPdfButton">
+          <i class="bi bi-filetype-pdf"></i> 下载 PDF 格式
+        </button>
       </div>
     </div>
   </div>
@@ -385,6 +389,7 @@
             const downloadOptions = document.getElementById('downloadOptions');
             const downloadHtmlButton = document.getElementById('downloadHtmlButton');
             const downloadWordButton = document.getElementById('downloadWordButton');
+            const downloadPdfButton = document.getElementById('downloadPdfButton');
             const dropdownArrow = document.getElementById('dropdownArrow');
             
             // 点击主下载按钮显示选项
@@ -453,6 +458,20 @@
             downloadOptions.classList.remove('show');
             dropdownArrow.style.transform = 'rotate(0deg)';
           });
+
+          // PDF下载选项
+          downloadPdfButton.addEventListener('click', function() {
+            // 直接将窗口或标签页重定向到下载地址，触发浏览器的下载功能
+            // window.location.href = '/down_pdf';
+
+            // 临时显示的提示消息
+            alert('该功能暂未上线，会尽快推出。');
+
+            // 关闭下拉菜单和恢复箭头方向
+            downloadOptions.classList.remove('show');
+            dropdownArrow.style.transform = 'rotate(0deg)';
+          });
+          
        });
           
 
