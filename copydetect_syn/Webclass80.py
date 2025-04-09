@@ -78,33 +78,45 @@ def serve_report():
 
 
 
-@app.route("/down_word", methods=["GET"])  # 使用 GET 请求
+@app.route("/down_word", methods=["GET"])
 def down_word():
     print("目前进入了报告后端页面")
     global data
     
     # 从myreport.py中获取保存的代码值
     from myreport import stored_code_values
-    output_file = "政务区块链基础平台项目源代码自研率检测报告.docx"
     
-    if data is not None:
+    # 获取当前应用所在目录
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    output_filename = "政务区块链基础平台项目源代码自研率检测报告.docx"
+    output_path = os.path.join(current_dir, output_filename)
+    
+    if stored_code_values:
         # 生成报告并获取文件路径
-        output_file = generate_report.create_government_blockchain_report(stored_code_values, data)
+        try:
+            output_file = generate_report.create_government_blockchain_report(
+                stored_code_values, data, output_path
+            )
+            print(f"报告文件已生成: {output_file}")
+        except Exception as e:
+            print(f"生成报告时出错: {e}")
+            traceback.print_exc()
     else:
-        print("警告：data为空，无法生成报告")
+        print("警告：stored_code_values为空，无法生成报告")
     
-    # 返回生成的Word文件供下载
-    try:
-        # 获取当前目录
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        return send_from_directory(current_dir, output_file, as_attachment=True)
-    except Exception as e:
-        print(f"下载文件时出错: {e}")
+    # 检查文件是否存在
+    if os.path.exists(output_path):
+        print(f"准备发送文件: {output_path}")
+        # 修正：正确分离目录和文件名
+        directory = os.path.dirname(output_path)
+        filename = os.path.basename(output_path)
+        return send_from_directory(directory, filename, as_attachment=True)
+    else:
+        print(f"文件不存在: {output_path}")
         return jsonify({
-            "error": "下载文件时出错",
-            "message": str(e)
-        }), 500
-
+            "error": "报告文件不存在",
+            "path": output_path
+        }), 404
 
 
 

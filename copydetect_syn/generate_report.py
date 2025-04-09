@@ -377,7 +377,22 @@ def create_government_blockchain_report(
     set_run_font(conclusion_run)
 
     # 保存文档
-    doc.save(output_file)
+ # 保存文档
+    try:
+        # 确保输出目录存在
+        output_dir = os.path.dirname(output_file)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            
+        doc.save(output_file)
+        print(f"报告成功保存到: {output_file}")
+    except Exception as e:
+        print(f"保存文档时出错: {e}")
+        # 尝试保存到当前目录
+        fallback_path = os.path.basename(output_file)
+        doc.save(fallback_path)
+        output_file = fallback_path
+        print(f"报告已保存到备用位置: {fallback_path}")
     return output_file
 
 
