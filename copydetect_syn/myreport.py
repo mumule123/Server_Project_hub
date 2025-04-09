@@ -19,6 +19,8 @@ import numpy as np
 from flask import session
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
+# 在文件开头添加全局变量
+stored_code_values = None
 
 class CodeFingerprint:
    
@@ -537,6 +539,8 @@ class Report:
 
 
     def generate_html_report(self, output_mode="save"):
+        global stored_code_values  # 声明使用全局变量
+        
         if len(self.similarity_matrix) == 0:
             logging.error("Cannot generate report: no files compared")
             return
@@ -556,6 +560,16 @@ class Report:
                 combined_item.append(matching_char_item[4])  # 添加字符级高亮版本的代码1
                 combined_item.append(matching_char_item[5])  # 添加字符级高亮版本的代码2
                 combined_code_list.append(combined_item)
+
+        # 保存需要的代码值到全局变量
+        stored_code_values = []
+        for item in combined_code_list:
+            stored_code_values.append({
+                'code7': item[7],  # coverage_ratio
+                'code8': item[8],  # total_lines
+                'code9': item[9],  # covered_lines
+                'code10': item[10]  # char_level_1
+            })
 
         data_dir = current_dir+"/templates/"
         # 生成相似度矩阵图像

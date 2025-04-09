@@ -21,6 +21,7 @@ import util
 import threading
 import traceback
 import secrets
+from myreport import Report
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -80,8 +81,31 @@ def serve_report():
 def down_word():
     print("目前进入了报告后端页面")
     
-    # 不需要获取 JSON 数据，只返回成功的响应
-    return jsonify({"message": "Word 报告生成中..."})
+    # 从myreport.py中获取保存的代码值
+    from myreport import stored_code_values
+    
+    # DEBUG: 打印获取到的值
+    print("DEBUG: 从myreport.py获取的代码值:")
+    if stored_code_values is None:
+        print("DEBUG: 没有找到保存的代码值")
+        return jsonify({
+            "message": "没有可用的代码值",
+            "status": "error"
+        }), 404
+    
+    print(f"DEBUG: 获取到 {len(stored_code_values)} 个代码值")
+    for idx, value in enumerate(stored_code_values):
+        print(f"\nDEBUG: 第{idx+1}个值:")
+        print(f"DEBUG: code7: {value['code7']}")
+        print(f"DEBUG: code8: {value['code8']}")
+        print(f"DEBUG: code9: {value['code9']}")
+        print(f"DEBUG: code10 长度: {len(str(value['code10']))} 字符")
+    
+    # 返回JSON响应
+    return jsonify({
+        "message": "Word 报告生成中...",
+        "code_values": stored_code_values
+    })
 
 
 
