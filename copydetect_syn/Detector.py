@@ -20,6 +20,9 @@ from jinja2 import Template
 import defaults
 from _config import CopydetectConfig
 
+import concurrent.futures
+from functools import partial
+
 
 # class CodeFingerprint:
 #     """Class for tokenizing, filtering, fingerprinting, and winnowing
@@ -444,20 +447,50 @@ class CopyDetector:
         if not self.conf.silent:
             print(f"{time.time()-start_time:6.2f}: Code comparison completed")
 
-    def run(self):
-        """Runs the copy detection loop for detecting overlap between
-        test and reference files. If no files are in the provided
-        directories, the similarity matrix will remain empty and any
-        attempts to generate a report will fail.
-        """
-        if len(self.test_files) == 0:
-            logging.error("Copy detector failed: No files found in "
-                          "test directories")
-        elif len(self.ref_files) == 0:
-            logging.error("Copy detector failed: No files found in "
-                          "reference directories")
-        else:
-            self._comparison_loop()
+    def calculate_similarity(self, test_file, ref_file):
+        """计算两个文件之间的相似度"""
+        test_fp = self.get_file_fingerprint(test_file)
+        ref_fp = self.get_file_fingerprint(ref_file)
+        
+        if test_fp is None or ref_fp is None:
+            return None
+        
+        return self.compare_fingerprints(test_fp, ref_fp)
+
+    def run(self, progress_callback=None):
+        """运行代码检测的主循环"""
+        # 初始化结果存储
+        self.similarity_matrix = np.zeros((len(self.test_files), len(self.ref_files)))
+        self.copied_code_list = []
+        
+        # 使用线程池进行并行计算
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+            # 创建所有任务
+            future_to_index = {}
+            for i, test_file in enumerate(self.test_files):
+                for j, ref_file in enumerate(self.ref_files):
+                    future = executor.submit(self.calculate_similarity, test_file, ref_file)
+                    future_to_index[future] = (i, j)
+            
+            # 处理结果
+            for future in concurrent.futures.as_completed(future_to_index):
+                i, j = future_to_index[future]
+                try:
+                    similarity = future.result()
+                    if similarity is not None:
+                        self.similarity_matrix[i, j] = similarity
+                        
+                        # 更新进度
+                        if progress_callback:
+                            progress = (i * len(self.ref_files) + j + 1) / (len(self.test_files) * len(self.ref_files))
+                            progress_callback(progress)
+                except Exception as e:
+                    print(f"Error calculating similarity: {e}")
+        
+        # 生成复制代码列表
+        self.copied_code_list = self.get_copied_code_list()
+        
+        return self.similarity_matrix, self.copied_code_list
 
     def get_copied_code_list(self):
         """Get a list of copied code to display on the output report.

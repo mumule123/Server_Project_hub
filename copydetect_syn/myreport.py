@@ -1,5 +1,5 @@
 import logging
-from jinja2 import Template
+from jinja2 import Template, Environment, FileSystemLoader
 import numpy as np
 import matplotlib.pyplot as plt
 import io
@@ -21,6 +21,24 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # 在文件开头添加全局变量
 stored_code_values = None
+
+# 创建一个全局变量存储编译后的模板
+_template_cache = {}
+
+def get_template(template_path):
+    """获取预编译的模板"""
+    global _template_cache
+    
+    if template_path not in _template_cache:
+        # 获取模板所在目录
+        template_dir = os.path.dirname(template_path)
+        template_name = os.path.basename(template_path)
+        
+        # 创建环境并加载模板
+        env = Environment(loader=FileSystemLoader(template_dir))
+        _template_cache[template_path] = env.get_template(template_name)
+    
+    return _template_cache[template_path]
 
 class CodeFingerprint:
    
@@ -275,54 +293,60 @@ class Report:
 
         return new_doc, hl_percent
 
-    def highlight_overlap_1(self,doc, slices, left_hl, right_hl,
-                          truncate=-1, escape_html=False):
-        if slices.shape[0] > 0:
-            hl_percent = np.sum(slices[1] - slices[0]) / len(doc)
-        else:
+    def highlight_overlap_1(self, doc, slices, left_hl, right_hl, truncate=-1, escape_html=False):
+        if slices.shape[0] == 0:
             warnings.warn("empty slices array")
             return doc, 0
 
-        new_doc = ""
+        # 计算高亮百分比
+        hl_percent = np.sum(slices[1] - slices[0]) / len(doc)
+        
+        # 使用列表存储结果，避免频繁字符串拼接
+        result_parts = []
         current_idx = 0
+        
         for slice_idx in range(slices.shape[1]):
             start_idx = slices[0, slice_idx]
             end_idx = slices[1, slice_idx]
-            num_2 = 0
-            start_2 = 0
-
+            
+            # 处理高亮前的文本
+            pre_highlight = doc[current_idx:start_idx]
             if escape_html:
-                pre_highlight = str(escape(doc[current_idx:start_idx]))
-                highlighted = left_hl + str(escape(doc[start_idx:end_idx])) + right_hl
-            else:
-                pre_highlight = doc[current_idx:start_idx]
-                highlighted = left_hl + doc[start_idx:end_idx] + right_hl
-
+                pre_highlight = str(escape(pre_highlight))
+            
+            # 处理高亮文本
+            highlighted = doc[start_idx:end_idx]
+            if escape_html:
+                highlighted = str(escape(highlighted))
+            highlighted = left_hl + highlighted + right_hl
+            
+            # 处理截断
             if truncate >= 0:
                 lines = pre_highlight.split("\n")
                 if slice_idx != 0 and len(lines) > truncate * 2:
                     pre_highlight = ("\n".join(lines[:truncate + 1]) + "\n\n...\n\n"
-                                     + "\n".join(lines[-truncate - 1:]))
+                                   + "\n".join(lines[-truncate - 1:]))
                 elif len(lines) > truncate:
                     pre_highlight = "\n".join(lines[-truncate - 1:])
-
-            new_doc += pre_highlight
-            new_doc += highlighted
-
+            
+            result_parts.append(pre_highlight)
+            result_parts.append(highlighted)
             current_idx = end_idx
-
+        
+        # 处理剩余文本
+        post_highlight = doc[current_idx:]
         if escape_html:
-            post_highlight = str(escape(doc[current_idx:]))
-        else:
-            post_highlight = doc[current_idx:]
-
+            post_highlight = str(escape(post_highlight))
+        
         if truncate >= 0:
             lines = post_highlight.split("\n")
             if len(lines) > truncate:
                 post_highlight = "\n".join(lines[:truncate])
-        new_doc += post_highlight
-
-        return new_doc, hl_percent
+        
+        result_parts.append(post_highlight)
+        
+        # 一次性拼接所有部分
+        return "".join(result_parts), hl_percent
 
     def highlight_overlap_char_level(self, doc1, doc2, left_hl, right_hl, escape_html=False):
         """使用字符级别比较来高亮显示相似代码
@@ -579,35 +603,14 @@ class Report:
                 })
 
         data_dir = current_dir+"/templates/"
-        # 注释掉生成相似度矩阵图像的代码
-        # plot_mtx = np.copy(self.similarity_matrix[:, :, 0])
-        # plot_mtx[plot_mtx == -1] = np.nan
-        # plt.imshow(plot_mtx)
-        # plt.colorbar()
-        # plt.tight_layout()
-        # sim_mtx_buffer = io.BytesIO()
-        # plt.savefig(sim_mtx_buffer)
-        # sim_mtx_buffer.seek(0)
-        # sim_mtx_base64 = base64.b64encode(sim_mtx_buffer.read()).decode()
-        # plt.close()
-
-        # 注释掉生成相似度分布直方图的代码
-        # scores = self.similarity_matrix[:, :, 0][self.similarity_matrix[:, :, 0] != -1]
-        # plt.hist(scores, bins=20)
-        # plt.tight_layout()
-        # sim_hist_buffer = io.BytesIO()
-        # plt.savefig(sim_hist_buffer)
-        # sim_hist_buffer.seek(0)
-        # sim_hist_base64 = base64.b64encode(sim_hist_buffer.read()).decode()
-        # plt.close()
-
-        # 为了保持代码能正常运行，添加空的base64字符串
+        template_path = data_dir + "report.html"
+        
+        # 使用预编译的模板
+        template = get_template(template_path)
+        
+        # 空的base64字符串替代图像
         sim_mtx_base64 = ""
         sim_hist_base64 = ""
-
-        # 渲染模板
-        with open(data_dir + "report.html", encoding="utf-8") as template_fp:
-            template = Template(template_fp.read())
 
         flagged = self.similarity_matrix[:, :, 0] > self.conf.display_t
         flagged_file_count = np.sum(np.any(flagged, axis=1))
