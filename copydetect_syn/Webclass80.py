@@ -23,6 +23,8 @@ import traceback
 import secrets
 from myreport import Report
 
+from config import WORD_REPORT_NAME # 配置文件
+
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 CORS(app)
@@ -76,20 +78,18 @@ def serve_report():
     return send_from_directory("./", "report.html")
 
 
-
-
 @app.route("/down_word", methods=["GET"])
 def down_word():
     global data
-    
+
     # 从myreport.py中获取保存的代码值
     from myreport import stored_code_values
-    
+
     # 获取当前应用所在目录
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    output_filename = "政务区块链基础平台项目源代码自研率检测报告.docx"
+    output_filename = WORD_REPORT_NAME  # 配置文件中的报告名称
     output_path = os.path.join(current_dir, output_filename)
-    
+
     if stored_code_values:
         # 生成报告并获取文件路径
         try:
@@ -101,7 +101,7 @@ def down_word():
             traceback.print_exc()
     else:
         print("警告：stored_code_values为空，无法生成报告")
-    
+
     # 检查文件是否存在
     if os.path.exists(output_path):
         print(f"准备发送文件: {output_path}")
@@ -115,8 +115,6 @@ def down_word():
             "error": "报告文件不存在",
             "path": output_path
         }), 404
-
-
 
 
 # 上传文件

@@ -9,13 +9,12 @@ from docx.oxml import OxmlElement
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 import json
-
-
-
+from config import WORD_REPORT_NAME # 配置文件
 
 def create_government_blockchain_report(
-    stored_code_values, data,
-    output_file="政务区块链基础平台项目源代码自研率检测报告.docx",
+    stored_code_values,
+    data,
+    output_file=WORD_REPORT_NAME,
 ):
     # 若 data 是字符串则先解析
     if isinstance(data, str):
@@ -30,8 +29,7 @@ def create_government_blockchain_report(
             print(f"解析 data 出错，无法解析为 JSON：{e}")
             return
 
-
-     # 创建新文档
+    # 创建新文档
     doc = Document()
 
     # 设置正文中文字体为宋体，英文字体为Times New Roman
@@ -67,18 +65,21 @@ def create_government_blockchain_report(
 
     main_title = doc.add_paragraph()
     main_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    title_run = main_title.add_run("《政务区块链基础平台》项目\n源代码自研率检测报告")
+    title_run = main_title.add_run("源代码自研率检测报告")
     set_run_font(title_run, size=Pt(22), bold=True)
 
-    # 添加底部信息
+    # 底部信息
     for _ in range(12):  # 添加空行
         doc.add_paragraph().alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     bottom_info = doc.add_paragraph()
     bottom_info.alignment = WD_ALIGN_PARAGRAPH.CENTER
     current_time = datetime.now().strftime("%Y 年 %m 月 %d 日 %H:%M")
-    bottom_run = bottom_info.add_run(f"编制单位：佛山大学\n{current_time}")
-    set_run_font(bottom_run, size=Pt(14))
+
+    bottom_run_first = bottom_info.add_run("编制单位：佛山大学")
+    set_run_font(bottom_run_first, size=Pt(14))
+    bottom_run_second = bottom_info.add_run(f"编制时间：{current_time}")
+    set_run_font(bottom_run_second, size=Pt(14))
 
     # 添加分页符
     doc.add_page_break()
@@ -87,13 +88,13 @@ def create_government_blockchain_report(
     # 设置标题
     title = doc.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    title_run = title.add_run("《政务区块链基础平台》项目源代码自研率检测报告")
+    title_run = title.add_run("源代码自研率检测报告")
     set_run_font(title_run, size=Pt(16), bold=True)
 
     # 添加简介文本
     intro = doc.add_paragraph()
     intro_run = intro.add_run(
-        "本报告对政务区块链基础平台项目代码自研率进行了检测，包括代码同源分析、代码引用、代码行级开源占比和代码文件级开源占比。"
+        "本报告对上传代码自研率进行了检测，包括代码同源分析、代码引用、代码行级开源占比和代码文件级开源占比。"
     )
     set_run_font(intro_run)
 
@@ -103,22 +104,20 @@ def create_government_blockchain_report(
     h1 = doc.add_paragraph()
     h1_run = h1.add_run("1. 定义")
     set_run_font(h1_run, bold=True)
-    
 
     # 添加项目简介内容
     intro_text = """政务区块链基础平台借助区块链等前沿信息技术，发挥其不可更改和追溯的特性，构建一个集成的平台接口/服务系统，实现数据和文件的链上存储，确保数据的可信查询和安全使用。同时，积极探索区块链数据交换和多部门间的业务合作，以创新数据管理的新方法，提升电子政务的服务和管理能力，提高政务工作的效率，并促进政府数据的有效治理。"""
     intro_para = doc.add_paragraph()
     intro_run = intro_para.add_run(intro_text)
     set_run_font(intro_run)
-    
-    
+
     # 一、字段说明
     doc.add_paragraph()
 
     h1 = doc.add_paragraph()
     h1_run = h1.add_run("2、字段说明")
     set_run_font(h1_run, bold=True)
-    
+
     doc.add_paragraph("以下是检测系统输出的字段说明：")
 
     def add_bold_paragraph(doc, field_title, description):
@@ -142,8 +141,7 @@ def create_government_blockchain_report(
     h1 = doc.add_paragraph()
     h1_run = h1.add_run("3、文件级代码检测结果")
     set_run_font(h1_run, bold=True)
-    
-    
+
     for i, item in enumerate(stored_code_values, start=1):
         doc.add_heading(f"第 {i} 条记录", level=3)
         doc.add_paragraph(f"待检测文件：{item['code2']}")
@@ -159,19 +157,19 @@ def create_government_blockchain_report(
             f"解析：该比对显示待检测文件中有 {item['code0'] * 100:.2f}% 的内容与参考文件高度相似，"
             f"且参考文件中 {item['code1'] * 100:.2f}% 的代码出现在此文件中，应引起关注。"
         )
-        
-   # 三、字符级详细代码比对结果
-   # 添加空行
+
+    # 三、字符级详细代码比对结果
+    # 添加空行
     doc.add_paragraph()
 
     h1 = doc.add_paragraph()
     h1_run = h1.add_run("4、字符级详细代码比对结果")
     set_run_font(h1_run, bold=True)
     valid_matches = []
-    
+
     # 改进数据处理逻辑，正确处理来自Java的ArrayList和String类型数据
     print(f"处理字符级详细代码比对数据，数据类型: {type(data)}")
-    
+
     try:
         # 处理Java ArrayList类型数据
         if str(type(data)).find('java.util.ArrayList') >= 0:
@@ -191,7 +189,7 @@ def create_government_blockchain_report(
                     print(f"无法解析Java字符串为JSON: {e}, 内容: {item_str[:100]}...")
             data = processed_data
             print(f"成功处理Java ArrayList数据，转换为{len(data)}个Python对象")
-    
+
         # 确保data是一个列表
         if not isinstance(data, list):
             if isinstance(data, str):
@@ -201,7 +199,7 @@ def create_government_blockchain_report(
                     data = [data]
             else:
                 data = [data]
-                
+
         # 遍历处理每个条目
         for entry in data:
             # 确保entry是字典类型
@@ -211,11 +209,11 @@ def create_government_blockchain_report(
                 except Exception as e:
                     print(f"无法解析条目为JSON: {e}, 内容: {entry[:100]}...")
                     continue
-                    
+
             if not isinstance(entry, dict):
                 print(f"跳过非字典类型的条目: {type(entry)}")
                 continue
-                
+
             for key, val in entry.items():
                 if key == "sus_length" or key == "src_length":
                     continue
@@ -311,12 +309,10 @@ def create_government_blockchain_report(
     else:
         doc.add_paragraph("未检测到任何字符级相似代码片段。")
 
-
-
     # 保存报告
     try:
         output_dir = os.path.dirname(output_file)
-        if output_dir and not os.path.exists(output_dir):
+        if (output_dir and not os.path.exists(output_dir)):
             os.makedirs(output_dir)
         doc.save(output_file)
         print(f"报告成功保存到: {output_file}")
