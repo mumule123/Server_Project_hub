@@ -17,6 +17,10 @@ from _config import CopydetectConfig
 import os
 import numpy as np
 from flask import session
+from concurrent.futures import ThreadPoolExecutor
+import functools
+import threading
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # 在文件开头添加全局变量
@@ -24,6 +28,10 @@ stored_code_values = None
 
 # 创建一个全局变量存储编译后的模板
 _template_cache = {}
+
+# 添加文件缓存
+_file_cache = {}
+_file_cache_lock = threading.Lock()
 
 def get_template(template_path):
     """获取预编译的模板"""
@@ -39,6 +47,23 @@ def get_template(template_path):
         _template_cache[template_path] = env.get_template(template_name)
     
     return _template_cache[template_path]
+
+def get_file_content(file_path, encoding="utf-8"):
+    """获取文件内容，使用缓存"""
+    global _file_cache, _file_cache_lock
+    
+    with _file_cache_lock:
+        if file_path in _file_cache:
+            return _file_cache[file_path]
+            
+        try:
+            with open(file_path, encoding=encoding) as f:
+                content = f.read()
+                _file_cache[file_path] = content
+                return content
+        except Exception as e:
+            logging.error(f"Error reading file {file_path}: {e}")
+            return ""
 
 class CodeFingerprint:
    
@@ -66,8 +91,7 @@ class CodeFingerprint:
                 )
                 raise e
         else:
-            with open(file, encoding=encoding) as code_fp:
-                code = code_fp.read()
+            code = get_file_content(file, encoding)
 
         self.filename = file
         self.raw_code = code
@@ -109,20 +133,30 @@ class Report:
         self.token_overlap_matrix = np.array([])
         self.slice_matrix = {}
         self.file_data = {}
+        self._executor = ThreadPoolExecutor(max_workers=4)  # 添加线程池
 
     def _preprocess_code(self, file_list):
-        for code_f in tqdm(file_list, bar_format= '   {l_bar}{bar}{r_bar}',
-                           disable=self.conf.silent):
+        """并行预处理代码文件"""
+        def process_file(code_f):
             if code_f not in self.file_data:
                 try:
                     self.file_data[code_f] = CodeFingerprint(
                         code_f, self.conf.noise_t, self.conf.window_size,
                         None, not self.conf.disable_filtering,
                         self.conf.force_language, encoding=self.conf.encoding)
-
                 except UnicodeDecodeError:
                     logging.warning(f"Skipping {code_f}: file not UTF-8 text")
-                    continue
+                    return None
+            return code_f
+
+        # 使用线程池并行处理文件
+        futures = []
+        for code_f in file_list:
+            futures.append(self._executor.submit(process_file, code_f))
+        
+        # 等待所有任务完成
+        for future in futures:
+            future.result()
 
     @classmethod
     def from_config(cls, config):
@@ -206,42 +240,55 @@ class Report:
     ...
 }"""
     def run(self,ha):
-        # 2.1 预处理代码
+        """优化后的运行方法"""
+        # 并行预处理代码
         self._preprocess_code(self.test_files + self.ref_files)
-        # 表示可疑文件 和 第 j 个参考文件之间的两个相似度分数
+        
+        # 初始化矩阵
         self.similarity_matrix = np.full(
             (len(self.test_files), len(self.ref_files), 2),
             -1,
             dtype=np.float64,
         )
-        # 表示两个文件 token 的重合率
         self.token_overlap_matrix = np.full(
             (len(self.test_files), len(self.ref_files)), -1
         )
-        # 存储匹配到的相似片段
         self.slice_matrix = {}
-        comparisons = {}
-
-        for i, test_f in enumerate(
-            tqdm(self.test_files,
-                 bar_format= '   {l_bar}{bar}{r_bar}')
-        ):
+        
+        # 使用线程池并行处理比较
+        def process_comparison(args):
+            i, test_f, j, ref_f = args
             testname = os.path.basename(test_f)
+            srcname = os.path.basename(ref_f)
+            true_name = testname + srcname
+            
+            if true_name not in ha.keys():
+                return None
+                
+            overlap, (sim1, sim2), (slices1, slices2) = self.compare_files(
+                feature=ha[true_name], feature_name=true_name)
+            
+            if slices1.shape[0] != 0:
+                self.slice_matrix[(test_f, ref_f)] = [slices1, slices2]
+            
+            return (i, j, overlap, sim1, sim2)
+        
+        # 准备比较任务
+        comparison_tasks = []
+        for i, test_f in enumerate(self.test_files):
             for j, ref_f in enumerate(self.ref_files):
-                srcname = os.path.basename(ref_f)
-                true_name = testname + srcname
-                if true_name not in ha.keys():
-                    continue
-                if (ref_f, test_f) in comparisons:
-                    ref_idx, test_idx = comparisons[(ref_f, test_f)]
-                    overlap = self.token_overlap_matrix[ref_idx, test_idx]
-                    sim2, sim1 = self.similarity_matrix[ref_idx, test_idx]
-                else:
-                    overlap, (sim1, sim2), (slices1, slices2) = self.compare_files(feature=ha[true_name],feature_name=true_name)
-                    comparisons[(test_f, ref_f)] = (i, j)
-                    if slices1.shape[0] != 0:
-                        self.slice_matrix[(test_f, ref_f)] = [slices1, slices2]
-
+                comparison_tasks.append((i, test_f, j, ref_f))
+        
+        # 并行执行比较
+        futures = []
+        for task in comparison_tasks:
+            futures.append(self._executor.submit(process_comparison, task))
+        
+        # 收集结果
+        for future in futures:
+            result = future.result()
+            if result is not None:
+                i, j, overlap, sim1, sim2 = result
                 self.similarity_matrix[i, j] = np.array([sim1, sim2])
                 self.token_overlap_matrix[i, j] = overlap
 
@@ -486,160 +533,169 @@ class Report:
         return coverage_ratio, total_lines, covered_line_count
 
     def get_copied_code_list(self, highlight_method="default"):
-        """获取抄袭代码列表，并按指定方法进行高亮
-        
-        Parameters
-        ----------
-        highlight_method : str
-            高亮方法，可以是 "default"（默认方法）或 "char_level"（字符级方法）
-        """
+        """获取抄袭代码列表，并按指定方法进行高亮"""
         if len(self.similarity_matrix) == 0:
             logging.error("Cannot generate code list: no files compared")
             return []
+            
+        # 使用 numpy 的 where 函数优化查找
         x, y = np.where(self.similarity_matrix[:, :, 0] > self.conf.display_t)
-
+        
+        # 预编译高亮标签
+        highlight_red_start = "<span class='highlight-red'>"
+        highlight_red_end = "</span>"
+        highlight_green_start = "<span class='highlight-green'>"
+        highlight_green_end = "</span>"
+        
         code_list = []
         file_pairs = set()
+        
+        # 批量处理文件对
         for idx in range(len(x)):
             test_f = self.test_files[x[idx]]
             ref_f = self.ref_files[y[idx]]
+            
+            # 跳过已处理的文件对
             if (ref_f, test_f) in file_pairs:
-                # if comparison is already in report, don't add it again
                 continue
             file_pairs.add((test_f, ref_f))
-
+            
+            # 获取相似度分数
             test_sim = self.similarity_matrix[x[idx], y[idx], 0]
             ref_sim = self.similarity_matrix[x[idx], y[idx], 1]
-
-            if (test_f, ref_f) in self.slice_matrix:
-                slices_test = self.slice_matrix[(test_f, ref_f)][0]
-                slices_ref = self.slice_matrix[(test_f, ref_f)][1]
-            else:
-                slices_test = self.slice_matrix[(ref_f, test_f)][1]
-                slices_ref = self.slice_matrix[(ref_f, test_f)][0]
-
-            if self.conf.truncate:
-                truncate = 10
-            else:
-                truncate = -1
-
-            # 使用默认方法高亮
-            hl_code_1, _ = self.highlight_overlap_1(
-                self.file_data[test_f].raw_code, slices_test,
-                "<span class='highlight-red'>", "</span>",
-                truncate=truncate, escape_html=True)
-            hl_code_2, _ = self.highlight_overlap_2(
-                self.file_data[ref_f].raw_code, slices_ref,
-                "<span class='highlight-green'>", "</span>",
-                truncate=truncate, escape_html=True)
-                
-            # 使用字符级别比较高亮
-            char_level_1, _ = self.highlight_overlap_char_level(
-                self.file_data[test_f].raw_code, 
-                self.file_data[ref_f].raw_code,
-                "<span class='highlight-red'>", "</span>",
-                escape_html=True)
-            char_level_2, _ = self.highlight_overlap_char_level(
-                self.file_data[ref_f].raw_code,
-                self.file_data[test_f].raw_code,
-                "<span class='highlight-green'>", "</span>",
-                escape_html=True)
-
-            overlap = self.token_overlap_matrix[x[idx], y[idx]]
             
-            # 计算代码行级开源占比
+            # 获取切片
+            slices_test = self.slice_matrix.get((test_f, ref_f), [None, None])[0]
+            slices_ref = self.slice_matrix.get((test_f, ref_f), [None, None])[1]
+            
+            if slices_test is None or slices_ref is None:
+                slices_test = self.slice_matrix.get((ref_f, test_f), [None, None])[1]
+                slices_ref = self.slice_matrix.get((ref_f, test_f), [None, None])[0]
+            
+            if slices_test is None or slices_ref is None:
+                continue
+                
+            # 设置截断参数
+            truncate = 10 if self.conf.truncate else -1
+            
+            # 获取原始代码
+            test_code = self.file_data[test_f].raw_code
+            ref_code = self.file_data[ref_f].raw_code
+            
+            # 并行处理高亮
+            with ThreadPoolExecutor(max_workers=4) as executor:
+                # 提交高亮任务
+                futures = []
+                futures.append(executor.submit(
+                    self.highlight_overlap_1,
+                    test_code, slices_test,
+                    highlight_red_start, highlight_red_end,
+                    truncate, True
+                ))
+                futures.append(executor.submit(
+                    self.highlight_overlap_2,
+                    ref_code, slices_ref,
+                    highlight_green_start, highlight_green_end,
+                    truncate, True
+                ))
+                futures.append(executor.submit(
+                    self.highlight_overlap_char_level,
+                    test_code, ref_code,
+                    highlight_red_start, highlight_red_end,
+                    True
+                ))
+                futures.append(executor.submit(
+                    self.highlight_overlap_char_level,
+                    ref_code, test_code,
+                    highlight_green_start, highlight_green_end,
+                    True
+                ))
+                
+                # 获取结果
+                hl_code_1, _ = futures[0].result()
+                hl_code_2, _ = futures[1].result()
+                char_level_1, _ = futures[2].result()
+                char_level_2, _ = futures[3].result()
+            
+            # 计算重叠和覆盖率
+            overlap = self.token_overlap_matrix[x[idx], y[idx]]
             coverage_ratio, total_lines, covered_lines = self.calculate_line_coverage(
-                self.file_data[test_f].raw_code, slices_test)
-
-            # 将两种高亮方式的代码都添加到code_list中
-            code_list.append([test_sim, ref_sim, test_f, ref_f,
-                              hl_code_1, hl_code_2, overlap, 
-                              coverage_ratio, total_lines, covered_lines,
-                              char_level_1, char_level_2])  # 添加字符级高亮结果
-
+                test_code, slices_test)
+            
+            # 添加到结果列表
+            code_list.append([
+                test_sim, ref_sim, test_f, ref_f,
+                hl_code_1, hl_code_2, overlap,
+                coverage_ratio, total_lines, covered_lines,
+                char_level_1, char_level_2  # 添加字符级高亮结果
+            ])
+        
+        # 按相似度排序
         code_list.sort(key=lambda x: -x[0])
         return code_list
 
-
-
     def generate_html_report(self, output_mode="save"):
-        global stored_code_values  # 声明使用全局变量
+        """优化后的报告生成方法"""
+        global stored_code_values
         
         if len(self.similarity_matrix) == 0:
             logging.error("Cannot generate report: no files compared")
             return
-
-        default_code_list = self.get_copied_code_list("default")
-        char_level_code_list = self.get_copied_code_list("char_level")
-
-        # 将两种代码列表合并到一个数据结构中
-        combined_code_list = []
-        for i, default_item in enumerate(default_code_list):
-            # 找到对应的字符级高亮项
-            matching_char_item = next((item for item in char_level_code_list 
-                                      if item[2] == default_item[2] and item[3] == default_item[3]), None)
-            if matching_char_item:
-                # 合并两种高亮方式的代码
-                combined_item = default_item.copy()
-                combined_item.append(matching_char_item[4])  # 添加字符级高亮版本的代码1
-                combined_item.append(matching_char_item[5])  # 添加字符级高亮版本的代码2
-                combined_code_list.append(combined_item)
-
-    # 保存需要的代码值到全局变量
+            
+        # 获取代码列表
+        code_list = self.get_copied_code_list()
+        
+        # 准备存储的代码值
         stored_code_values = []
-        # 检查 combined_code_list 是否为空
-        if combined_code_list:
-            # 遍历 combined_code_list 而不是 combined_item
-            for item in combined_code_list:
-                stored_code_values.append({
-                    'code0': float(item[0]),  # 转换为普通 Python float
-                    'code1': float(item[1]),  # 转换为普通 Python float
-                    'code2': str(item[2]),    # 文件路径应该是字符串
-                    'code3': str(item[3]),    # 文件路径应该是字符串
-                    'code6': int(item[6]),    # 转换为普通 Python int
-                    'code7': float(item[7]),  # 转换为普通 Python float
-                    'code8': int(item[8]),    # 转换为普通 Python int
-                    'code9': int(item[9]),    # 转换为普通 Python int
-                })
-
-        data_dir = current_dir+"/templates/"
-        template_path = data_dir + "report.html"
+        for item in code_list:
+            stored_code_values.append({
+                'code0': float(item[0]),
+                'code1': float(item[1]),
+                'code2': str(item[2]),
+                'code3': str(item[3]),
+                'code6': int(item[6]),
+                'code7': float(item[7]),
+                'code8': int(item[8]),
+                'code9': int(item[9]),
+            })
         
         # 使用预编译的模板
-        template = get_template(template_path)
+        template = get_template(os.path.join(current_dir, "templates", "report.html"))
         
-        # 空的base64字符串替代图像
-        sim_mtx_base64 = ""
-        sim_hist_base64 = ""
-
-        flagged = self.similarity_matrix[:, :, 0] > self.conf.display_t
-        flagged_file_count = np.sum(np.any(flagged, axis=1))
-
-        formatted_conf = json.dumps(self.conf.to_json(), indent=4)
-        output = template.render(config_params=formatted_conf,
-                                 version=1.0,
-                                 test_count=len(self.test_files),
-                                 test_files=self.test_files,
-                                 compare_count=len(self.ref_files),
-                                 compare_files=self.ref_files,
-                                 flagged_file_count=flagged_file_count,
-                                 code_list=combined_code_list,
-                                 sim_mtx_base64=sim_mtx_base64,
-                                 sim_hist_base64=sim_hist_base64)
-
+        # 准备模板数据
+        template_data = {
+            'config_params': json.dumps(self.conf.to_json(), indent=4),
+            'version': 1.0,
+            'test_count': len(self.test_files),
+            'test_files': self.test_files,
+            'compare_count': len(self.ref_files),
+            'compare_files': self.ref_files,
+            'flagged_file_count': np.sum(np.any(self.similarity_matrix[:, :, 0] > self.conf.display_t, axis=1)),
+            'code_list': code_list,
+            'sim_mtx_base64': "",
+            'sim_hist_base64': ""
+        }
+        
+        # 渲染模板
+        output = template.render(**template_data)
+        
         if output_mode == "save":
-            with open(self.conf.out_file, "w", encoding="utf-8") as report_f:
-                report_f.write(output)
-
-            if not self.conf.silent:
-                print(
-                    f"Output saved to {self.conf.out_file.replace('//', '/')}"
-                )
-            # if self.conf.autoopen:
-            #     webbrowser.open(
-            #         'file://' + str(Path(self.conf.out_file).resolve())
-            #     )
+            # 异步保存文件
+            def save_report():
+                with open(self.conf.out_file, "w", encoding="utf-8") as report_f:
+                    report_f.write(output)
+                if not self.conf.silent:
+                    print(f"Output saved to {self.conf.out_file.replace('//', '/')}")
+            
+            # 在新线程中保存报告
+            threading.Thread(target=save_report).start()
+            
         elif output_mode == "return":
             return output
         else:
             raise ValueError("output_mode not supported")
+
+    def __del__(self):
+        """清理线程池资源"""
+        if hasattr(self, '_executor'):
+            self._executor.shutdown(wait=True)
