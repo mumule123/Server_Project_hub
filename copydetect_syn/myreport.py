@@ -579,27 +579,31 @@ class Report:
                 })
 
         data_dir = current_dir+"/templates/"
-        # 生成相似度矩阵图像
-        plot_mtx = np.copy(self.similarity_matrix[:, :, 0])
-        plot_mtx[plot_mtx == -1] = np.nan
-        plt.imshow(plot_mtx)
-        plt.colorbar()
-        plt.tight_layout()
-        sim_mtx_buffer = io.BytesIO()
-        plt.savefig(sim_mtx_buffer)
-        sim_mtx_buffer.seek(0)
-        sim_mtx_base64 = base64.b64encode(sim_mtx_buffer.read()).decode()
-        plt.close()
+        # 注释掉生成相似度矩阵图像的代码
+        # plot_mtx = np.copy(self.similarity_matrix[:, :, 0])
+        # plot_mtx[plot_mtx == -1] = np.nan
+        # plt.imshow(plot_mtx)
+        # plt.colorbar()
+        # plt.tight_layout()
+        # sim_mtx_buffer = io.BytesIO()
+        # plt.savefig(sim_mtx_buffer)
+        # sim_mtx_buffer.seek(0)
+        # sim_mtx_base64 = base64.b64encode(sim_mtx_buffer.read()).decode()
+        # plt.close()
 
-        # 生成相似度分布直方图
-        scores = self.similarity_matrix[:, :, 0][self.similarity_matrix[:, :, 0] != -1]
-        plt.hist(scores, bins=20)
-        plt.tight_layout()
-        sim_hist_buffer = io.BytesIO()
-        plt.savefig(sim_hist_buffer)
-        sim_hist_buffer.seek(0)
-        sim_hist_base64 = base64.b64encode(sim_hist_buffer.read()).decode()
-        plt.close()
+        # 注释掉生成相似度分布直方图的代码
+        # scores = self.similarity_matrix[:, :, 0][self.similarity_matrix[:, :, 0] != -1]
+        # plt.hist(scores, bins=20)
+        # plt.tight_layout()
+        # sim_hist_buffer = io.BytesIO()
+        # plt.savefig(sim_hist_buffer)
+        # sim_hist_buffer.seek(0)
+        # sim_hist_base64 = base64.b64encode(sim_hist_buffer.read()).decode()
+        # plt.close()
+
+        # 为了保持代码能正常运行，添加空的base64字符串
+        sim_mtx_base64 = ""
+        sim_hist_base64 = ""
 
         # 渲染模板
         with open(data_dir + "report.html", encoding="utf-8") as template_fp:
