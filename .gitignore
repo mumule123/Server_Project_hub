@@ -17,4 +17,4 @@ copydetect_syn/maven-check
 # 检测报告html文件
 copydetect_syn/static/report.html
 # 检测报告word文件
-/*.docx
+*.docx
