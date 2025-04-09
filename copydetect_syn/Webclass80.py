@@ -80,7 +80,6 @@ def serve_report():
 
 @app.route("/down_word", methods=["GET"])
 def down_word():
-    print("目前进入了报告后端页面")
     global data
     
     # 从myreport.py中获取保存的代码值
@@ -97,7 +96,6 @@ def down_word():
             output_file = generate_report.create_government_blockchain_report(
                 stored_code_values, data, output_path
             )
-            print(f"报告文件已生成: {output_file}")
         except Exception as e:
             print(f"生成报告时出错: {e}")
             traceback.print_exc()
@@ -283,12 +281,17 @@ def upload_file():
             data = calc.get_check_params(
                 pairs_path, upload_folder, search_folder
             )  # 调用类中的add方法
-            code_main.mymain([upload_folder], [search_folder], data)  # 进行代码对比分析
-
-            # return render_template_string(
-            #     "{file_contents}", file_contents="./report.html"
-            # )
-            return '', 204  # 204 No Content
+            print("------")
+            print(data)
+            if data is None or len(data) == 0:
+                print("没有数据或数据为空列表")
+                return jsonify({
+                    "status": "error",
+                    "message": "未找到相似代码，请尝试上传其他文件"
+                }), 400
+            else:
+                code_main.mymain([upload_folder], [search_folder], data)  # 进行代码对比分析
+                return '', 204  # 204 No Content
 
 
     except Exception as e:

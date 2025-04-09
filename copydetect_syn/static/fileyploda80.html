@@ -663,16 +663,17 @@
                 return;
             }
 
-             // 显示加载提示
+            // 显示加载提示
             document.getElementById('loadingIndicator').style.display = 'block';
+            
+            // 清除之前的错误信息
+            document.getElementById('uploadStatus').classList.remove('error');
+            document.getElementById('uploadStatus').textContent = '';
             
             const formData = new FormData();
             for (let i = 0; i < window.selectedFiles.length; i++) {
                 formData.append('file', window.selectedFiles[i]);
             }
-
-            //原来的服务器地址
-            //const uploadUrl = 'https://ai02.fosu.edu.cn//upcode_file';
 
             // 根据当前主机动态设置上传地址
             let uploadUrl = '';
@@ -682,20 +683,41 @@
                 uploadUrl = 'https://ai02.fosu.edu.cn/upcode_file';  // 部署到服务器的地址
             }
 
-
             fetch(uploadUrl, {
                 method: 'POST',
                 body: formData
             })
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data);
-                    window.location.href = `${window.location.origin}/static/report.html`;
-                })
-                .catch(error => {
-                    console.error('上传失败：', error);
-                });
+            .then(response => {
+                // 检查响应状态
+                if (!response.ok) {
+                    // 如果状态不是2xx，解析JSON响应
+                    return response.json().then(errorData => {
+                        // 抛出带有错误消息的错误，将在catch块中处理
+                        throw new Error(errorData.message || '上传失败');
+                    });
+                }
+                // 如果状态是2xx，返回响应文本
+                return response.text();
+            })
+            .then(data => {
+                console.log('上传成功:', data);
+                // 上传成功，跳转到报告页面
+                window.location.href = `${window.location.origin}/static/report.html`;
+            })
+            .catch(error => {
+                // 隐藏加载提示
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                // 显示错误消息
+                const uploadStatus = document.getElementById('uploadStatus');
+                uploadStatus.textContent = error.message || '上传失败，请稍后重试';
+                uploadStatus.classList.add('error');
+                uploadStatus.style.display = 'block';
+                
+                console.error('上传失败：', error);
+            });
         }
+        
     </script>
 </body>
 
