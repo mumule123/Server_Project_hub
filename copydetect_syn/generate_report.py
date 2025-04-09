@@ -55,7 +55,7 @@ def create_government_blockchain_report(
     # === 第一页：封面 ===
     # 添加页眉标题
     header_para = doc.sections[0].header.paragraphs[0]
-    header_run = header_para.add_run("《政务区块链基础平台》项目源代码自研率检测报告")
+    header_run = header_para.add_run("源代码自研率检测报告")
     header_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
     set_run_font(header_run, size=Pt(12))
 
@@ -66,7 +66,8 @@ def create_government_blockchain_report(
     main_title = doc.add_paragraph()
     main_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title_run = main_title.add_run("源代码自研率检测报告")
-    set_run_font(title_run, size=Pt(22), bold=True)
+    set_run_font(title_run, size=Pt(28), bold=True)
+    title_run.element.rPr.rFonts.set(qn("w:eastAsia"), "微软雅黑") # 这个标题单独设置成微软雅黑吧
 
     # 底部信息
     for _ in range(12):  # 添加空行
@@ -74,9 +75,9 @@ def create_government_blockchain_report(
 
     bottom_info = doc.add_paragraph()
     bottom_info.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    current_time = datetime.now().strftime("%Y 年 %m 月 %d 日 %H:%M")
+    current_time = datetime.now().strftime("%Y 年 %m 月 %d 日 %H:%M:%S")
 
-    bottom_run_first = bottom_info.add_run("编制单位：佛山大学")
+    bottom_run_first = bottom_info.add_run("编制单位：佛山大学\n")
     set_run_font(bottom_run_first, size=Pt(14))
     bottom_run_second = bottom_info.add_run(f"编制时间：{current_time}")
     set_run_font(bottom_run_second, size=Pt(14))
@@ -106,7 +107,7 @@ def create_government_blockchain_report(
     set_run_font(h1_run, bold=True)
 
     # 添加项目简介内容
-    intro_text = """政务区块链基础平台借助区块链等前沿信息技术，发挥其不可更改和追溯的特性，构建一个集成的平台接口/服务系统，实现数据和文件的链上存储，确保数据的可信查询和安全使用。同时，积极探索区块链数据交换和多部门间的业务合作，以创新数据管理的新方法，提升电子政务的服务和管理能力，提高政务工作的效率，并促进政府数据的有效治理。"""
+    intro_text = """源代码安全审计的主要目的是提高源代码质量，通过对程序源代码进行检查和分析，发现源代码在软件设计、测试、应用部署等各阶段中可能存在的安全缺陷或安全漏洞，从源头上避免潜在的安全风险。"""
     intro_para = doc.add_paragraph()
     intro_run = intro_para.add_run(intro_text)
     set_run_font(intro_run)
