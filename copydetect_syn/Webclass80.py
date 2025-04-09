@@ -85,15 +85,25 @@ def down_word():
     
     # 从myreport.py中获取保存的代码值
     from myreport import stored_code_values
+    output_file = "政务区块链基础平台项目源代码自研率检测报告.docx"
+    
     if data is not None:
-        generate_report.create_government_blockchain_report(stored_code_values, data)
+        # 生成报告并获取文件路径
+        output_file = generate_report.create_government_blockchain_report(stored_code_values, data)
     else:
         print("警告：data为空，无法生成报告")
-    # 返回JSON响应
-    return jsonify({
-        "message": "Word 报告生成中...",
-        "code_values": stored_code_values
-    })
+    
+    # 返回生成的Word文件供下载
+    try:
+        # 获取当前目录
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        return send_from_directory(current_dir, output_file, as_attachment=True)
+    except Exception as e:
+        print(f"下载文件时出错: {e}")
+        return jsonify({
+            "error": "下载文件时出错",
+            "message": str(e)
+        }), 500
 
 
 
@@ -261,7 +271,6 @@ def upload_file():
             data = calc.get_check_params(
                 pairs_path, upload_folder, search_folder
             )  # 调用类中的add方法
-            print(data)
             code_main.mymain([upload_folder], [search_folder], data)  # 进行代码对比分析
 
             # return render_template_string(

@@ -411,19 +411,14 @@
                 dropdownArrow.style.transform = 'rotate(0deg)';
             }
             
-          // Word下载选项（仅展示，不实现实际功能）
+          // Word下载选项
           downloadWordButton.addEventListener('click', function() {
-            // 发送 GET 请求到 Flask 后端的 /down_word 路由
-            fetch('/down_word')  // 使用 GET 请求
-                .then(response => response.json())
-                .then(data => {
-                    // 如果成功，直接在网页进行下载
-                    
-                })
-                .catch(error => {
-                    console.error('下载过程中出错:', error);
-                    alert('发生错误，请稍后再试！');
-                });
+            // 直接将窗口或标签页重定向到下载地址，触发浏览器的下载功能
+            window.location.href = '/down_word';
+            
+            // 关闭下拉菜单和恢复箭头方向
+            downloadOptions.classList.remove('show');
+            dropdownArrow.style.transform = 'rotate(0deg)';
           });
               // 关闭下拉菜单和恢复箭头方向
               downloadOptions.classList.remove('show');
