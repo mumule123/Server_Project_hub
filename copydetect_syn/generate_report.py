@@ -1,28 +1,44 @@
 from docx import Document
-from docx.shared import Pt, Inches, Cm, RGBColor
+from docx.shared import Pt,Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+import os
+from datetime import datetime
+from docx.shared import Inches, RGBColor
+from docx.oxml.ns import qn
+from docx.oxml import OxmlElement
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
-from docx.oxml.ns import qn
-import os
+import json
+
+
 
 
 def create_government_blockchain_report(
-    stored_code_values,data,
+    stored_code_values, data,
     output_file="政务区块链基础平台项目源代码自研率检测报告.docx",
 ):
-    # print(stored_code_values)
-    # print(data)
-    # 创建新文档
+    # 若 data 是字符串则先解析
+    if isinstance(data, str):
+        try:
+            data = json.loads(data)
+
+            # 如果解析后是 list[str]，还要进一步把每个 entry 再做 json.loads
+            if isinstance(data, list) and all(isinstance(d, str) for d in data):
+                data = [json.loads(d) for d in data]
+
+        except Exception as e:
+            print(f"解析 data 出错，无法解析为 JSON：{e}")
+            return
+
+
+     # 创建新文档
     doc = Document()
 
     # 设置正文中文字体为宋体，英文字体为Times New Roman
-    def set_run_font(run, size=Pt(12), bold=False, color=None):
+    def set_run_font(run, size=Pt(12), bold=False):
         font = run.font
         font.size = size
         font.bold = bold
-        if color:
-            font.color.rgb = color
 
         # 设置英文字体
         run.font.name = "Times New Roman"
@@ -60,7 +76,8 @@ def create_government_blockchain_report(
 
     bottom_info = doc.add_paragraph()
     bottom_info.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    bottom_run = bottom_info.add_run("编制单位：佛山大学\n2024 年 10 月")
+    current_time = datetime.now().strftime("%Y 年 %m 月 %d 日 %H:%M")
+    bottom_run = bottom_info.add_run(f"编制单位：佛山大学\n{current_time}")
     set_run_font(bottom_run, size=Pt(14))
 
     # 添加分页符
@@ -73,330 +90,290 @@ def create_government_blockchain_report(
     title_run = title.add_run("《政务区块链基础平台》项目源代码自研率检测报告")
     set_run_font(title_run, size=Pt(16), bold=True)
 
-    # 添加检测结果标题
+    # 添加简介文本
+    intro = doc.add_paragraph()
+    intro_run = intro.add_run(
+        "本报告对政务区块链基础平台项目代码自研率进行了检测，包括代码同源分析、代码引用、代码行级开源占比和代码文件级开源占比。"
+    )
+    set_run_font(intro_run)
+
+    # 添加定义标题
+    doc.add_paragraph()
+
     h1 = doc.add_paragraph()
-    h1_run = h1.add_run("1. 检测结果概述")
+    h1_run = h1.add_run("1. 定义")
     set_run_font(h1_run, bold=True)
+    
 
-    # 添加检测参数说明
-    if data:
-        params_title = doc.add_paragraph()
-        params_run = params_title.add_run("1.1 检测参数配置")
-        set_run_font(params_run, bold=True)
-        
-        params_text = doc.add_paragraph()
-        # 处理Java ArrayList对象
-        try:
-            # 尝试解析Java ArrayList数据
-            data_length = 0
-            suspicious_files = set()
-            reference_files = set()
-            match_count = 0
-            empty_match_count = 0
-            
-            # 转换为字符串并解析
-            data_str = str(data)
-            if '[' in data_str and ']' in data_str:
-                # 提取比较文件信息
-                import json
-                try:
-                    # 尝试将字符串转换为Python列表/字典
-                    data_items = json.loads(data_str)
-                    data_length = len(data_items)
-                    
-                    for item in data_items:
-                        for key in item:
-                            parts = key.split("java")
-                            if len(parts) >= 2:
-                                suspicious = parts[0] + "java"
-                                reference = "java" + parts[1]
-                                suspicious_files.add(suspicious)
-                                reference_files.add(reference)
-                                
-                                if "feature1" in item[key] and item[key]["feature1"]:
-                                    match_count += 1
-                                else:
-                                    empty_match_count += 1
-                except:
-                    pass
-            
-            params_info = f"""检测参数配置如下：
-- 检测比对项数: {data_length}
-- 被检测文件数: {len(suspicious_files)}
-- 参考文件数: {len(reference_files)}
-- 有匹配特征的比对项: {match_count}
-- 无匹配特征的比对项: {empty_match_count}
+    # 添加项目简介内容
+    intro_text = """政务区块链基础平台借助区块链等前沿信息技术，发挥其不可更改和追溯的特性，构建一个集成的平台接口/服务系统，实现数据和文件的链上存储，确保数据的可信查询和安全使用。同时，积极探索区块链数据交换和多部门间的业务合作，以创新数据管理的新方法，提升电子政务的服务和管理能力，提高政务工作的效率，并促进政府数据的有效治理。"""
+    intro_para = doc.add_paragraph()
+    intro_run = intro_para.add_run(intro_text)
+    set_run_font(intro_run)
+    
+    
+    # 一、字段说明
+    doc.add_paragraph()
 
-比对详情摘要:
-"""
-            # 添加前5个匹配项的简要信息
-            try:
-                for i, item in enumerate(json.loads(data_str)):
-                    if i >= 5:  # 只显示前5个
-                        break
-                    for key in item:
-                        # 直接从item字典中获取sus_length和src_length
-                        sus_length = item[key].get('sus_length', '未知')
-                        src_length = item[key].get('src_length', '未知')
-                        
-                        # 检查是否有feature1
-                        if "feature1" in item[key] and item[key]["feature1"]:
-                            feature_length = item[key]["feature1"].get('length', 0)
-                            features = f"匹配({feature_length}字节)"
-                        else:
-                            features = "无匹配特征"
-                            
-                        params_info += f"- 项目{i+1}: 可疑文件({sus_length}字节) vs 参考文件({src_length}字节) - {features}\n"
-                
-                if data_length > 5:
-                    params_info += f"... 以及其他 {data_length - 5} 个比对项"
-            except:
-                params_info += "- 详细信息解析失败\n"
-                
-            # 添加一个检测数据表格
-            try:
-                # 创建检测数据表格
-                params_info += "\n\n检测数据详情表格："
-                params_run = params_text.add_run(params_info)
-                set_run_font(params_run)
-                
-                # 创建表格
-                match_table = doc.add_table(rows=1, cols=5)
-                match_table.style = "Table Grid"
-                
-                # 设置表头
-                header_cells = match_table.rows[0].cells
-                headers = ["待检测代码文件名", "对应源代码文件", "重复代码详情", "待检测代码长度", "对应源代码长度"]
-                for i, text in enumerate(headers):
-                    run = header_cells[i].paragraphs[0].add_run(text)
-                    set_run_font(run, bold=True)
-                
-                # 填充数据
-                data_items = json.loads(data_str)
-                for item in data_items:
-                    for key in item:
-                        row = match_table.add_row()
-                        cells = row.cells
-                        
-                        # 拆分文件名
-                        parts = key.split("java")
-                        if len(parts) >= 2:
-                            suspicious_file = parts[0] + "java"
-                            reference_file = "java" + parts[1]
-                            
-                            # 去除前缀，只保留文件名
-                            suspicious_name = suspicious_file.replace("suspicious-document", "")
-                            reference_name = reference_file.replace("source-document", "")
-                            
-                            # 第1列：待检测代码文件名
-                            cells[0].text = suspicious_name
-                            
-                            # 第2列：对应源代码文件
-                            cells[1].text = reference_name
-                            
-                            # 第3列：重复代码详情
-                            if "feature1" in item[key] and item[key]["feature1"]:
-                                offset = item[key]["feature1"].get("offset", 0)
-                                length = item[key]["feature1"].get("length", 0)
-                                src_offset = item[key]["feature1"].get("srcOffset", 0)
-                                src_length = item[key]["feature1"].get("srcLength", 0)
-                                cells[2].text = f"[{offset}:({offset+length})]-{src_offset}:{src_length}"
-                            else:
-                                cells[2].text = "无匹配特征"
-                            
-                            # 第4列：待检测代码长度
-                            sus_length = item[key].get("sus_length", "未知")
-                            cells[3].text = str(sus_length)
-                            
-                            # 第5列：对应源代码长度
-                            src_length = item[key].get("src_length", "未知")
-                            cells[4].text = str(src_length)
-                            
-                            # 设置单元格字体
-                            for cell in cells:
-                                for paragraph in cell.paragraphs:
-                                    for run in paragraph.runs:
-                                        set_run_font(run)
-                
-                # 限制表格最大显示10行
-                if len(match_table.rows) > 11:  # 算上表头行
-                    while len(match_table.rows) > 11:
-                        match_table._tbl.remove(match_table.rows[-1]._tr)
-                    
-                    # 添加说明行
-                    row = match_table.add_row()
-                    cells = row.cells
-                    cells[0].merge(cells[4])
-                    cells[0].text = f"... 等共 {len(data_items)} 项匹配数据 (仅显示前10项)"
-                    for paragraph in cells[0].paragraphs:
-                        for run in paragraph.runs:
-                            set_run_font(run, bold=True)
-                            
-            except Exception as e:
-                error_para = doc.add_paragraph()
-                error_run = error_para.add_run(f"解析检测数据失败: {str(e)}")
-                set_run_font(error_run, color=RGBColor(255, 0, 0))
-                
-        except Exception as e:
-            params_info = f"""检测参数配置如下：
-- 无法解析的检测参数: {type(data).__name__}
-- 错误: {str(e)}
-- 原始数据: {str(data)[:200]}...
-            """
-        params_run = params_text.add_run(params_info)
-        set_run_font(params_run)
+    h1 = doc.add_paragraph()
+    h1_run = h1.add_run("2、字段说明")
+    set_run_font(h1_run, bold=True)
     
-    # 添加检测结果摘要
-    results_title = doc.add_paragraph()
-    results_run = results_title.add_run("1.2 检测结果摘要")
-    set_run_font(results_run, bold=True)
-    
-    if stored_code_values:
-        # 计算平均值
-        avg_similarity = sum(item['code0'] for item in stored_code_values) / len(stored_code_values) if stored_code_values else 0
-        avg_coverage = sum(item['code7'] for item in stored_code_values) / len(stored_code_values) if stored_code_values else 0
-        total_lines = sum(item['code8'] for item in stored_code_values)
-        covered_lines = sum(item['code9'] for item in stored_code_values)
-        overall_coverage = covered_lines / total_lines if total_lines > 0 else 0
-        
-        summary_text = doc.add_paragraph()
-        summary_info = f"""检测结果摘要：
-- 检测文件数量: {len(stored_code_values)}
-- 平均相似度: {avg_similarity:.2%}
-- 平均行覆盖率: {avg_coverage:.2%}
-- 总行数: {total_lines}
-- 覆盖行数: {covered_lines}
-- 整体行覆盖率: {overall_coverage:.2%}
-- 自研率评估: {(1-overall_coverage):.2%}
-        """
-        summary_run = summary_text.add_run(summary_info)
-        set_run_font(summary_run)
-    
-    # 添加详细检测结果表格
-    if stored_code_values:
-        details_title = doc.add_paragraph()
-        details_run = details_title.add_run("2. 详细检测结果")
-        set_run_font(details_run, bold=True)
-        
-        table_title = doc.add_paragraph()
-        table_run = table_title.add_run("表 2 代码相似度与覆盖率详情")
-        set_run_font(table_run)
-        
-        # 创建详细结果表格
-        table = doc.add_table(rows=1, cols=7)
-        table.style = "Table Grid"
-        
-        # 设置表头
-        header_cells = table.rows[0].cells
-        headers = ["序号", "测试文件", "参考文件", "相似度", "重叠Token数", "代码行数", "覆盖率"]
-        for i, text in enumerate(headers):
-            run = header_cells[i].paragraphs[0].add_run(text)
-            set_run_font(run, bold=True)
-        
-        # 填充数据
-        for i, item in enumerate(stored_code_values):
-            row = table.add_row()
-            cells = row.cells
-            
-            # 添加数据到表格
-            cells[0].text = str(i+1)
-            
-            # 提取文件名而不是完整路径
-            test_file = os.path.basename(item['code2'])
-            ref_file = os.path.basename(item['code3'])
-            
-            cells[1].text = test_file
-            cells[2].text = ref_file
-            cells[3].text = f"{item['code0']:.2%}"
-            cells[4].text = str(item['code6'])
-            cells[5].text = f"{item['code8']} 行"
-            cells[6].text = f"{item['code7']:.2%}"
-            
-            # 根据覆盖率设置颜色
-            if item['code7'] > 0.7:
-                for paragraph in cells[6].paragraphs:
-                    for run in paragraph.runs:
-                        set_run_font(run, color=RGBColor(255, 0, 0))  # 红色
-            
-            # 设置单元格字体
-            for cell in cells:
-                for paragraph in cell.paragraphs:
-                    for run in paragraph.runs:
-                        set_run_font(run)
-    
-    # 添加高风险文件分析
-    if stored_code_values:
-        high_risk = [item for item in stored_code_values if item['code7'] > 0.5]
-        if high_risk:
-            risk_title = doc.add_paragraph()
-            risk_run = risk_title.add_run("3. 高风险文件分析")
-            set_run_font(risk_run, bold=True)
-            
-            for i, item in enumerate(high_risk):
-                file_title = doc.add_paragraph()
-                file_run = file_title.add_run(f"3.{i+1} {os.path.basename(item['code2'])}")
-                set_run_font(file_run, bold=True)
-                
-                analysis = doc.add_paragraph()
-                analysis_text = f"""文件路径: {item['code2']}
-参考文件: {item['code3']}
-相似度: {item['code0']:.2%}
-覆盖率: {item['code7']:.2%}
-总行数: {item['code8']}
-覆盖行数: {item['code9']}
-风险评估: {'高风险' if item['code7'] > 0.7 else '中等风险'}
+    doc.add_paragraph("以下是检测系统输出的字段说明：")
 
-分析结论: 该文件与参考源码存在较高相似度，建议进行代码重构或标明引用来源。
-                """
-                analysis_run = analysis.add_run(analysis_text)
-                set_run_font(analysis_run)
-    
-    # 添加结论
-    conclusion_title = doc.add_paragraph()
-    conclusion_run = conclusion_title.add_run("4. 检测结论")
-    set_run_font(conclusion_run, bold=True)
-    
-    conclusion = doc.add_paragraph()
-    if stored_code_values:
-        overall_score = 1 - overall_coverage
-        if overall_score > 0.8:
-            assessment = "优秀，代码自研率高"
-        elif overall_score > 0.6:
-            assessment = "良好，代码自研率中等"
-        else:
-            assessment = "较差，代码自研率低"
-        
-        conclusion_text = f"""根据检测结果，项目代码自研率为 {overall_score:.2%}，评价为{assessment}。
-检测共发现 {len(stored_code_values)} 个相似文件，其中高风险文件 {len(high_risk)} 个。
-建议对高风险文件进行重构或明确标注引用来源，以提高代码质量和自研水平。
-        """
-    else:
-        conclusion_text = "未检测到有效的相似度数据，无法给出准确评估。"
-    
-    conclusion_run = conclusion.add_run(conclusion_text)
-    set_run_font(conclusion_run)
+    def add_bold_paragraph(doc, field_title, description):
+        p = doc.add_paragraph()
+        run1 = p.add_run(f"{field_title}：")
+        run1.bold = True
+        run2 = p.add_run(description)
 
-    # 保存文档
- # 保存文档
+    add_bold_paragraph(doc, "待检测代码路径", "用户上传、参与查重的代码文件路径。")
+    add_bold_paragraph(doc, "参考代码路径", "系统比对的原始或参考源代码路径。")
+    add_bold_paragraph(doc, "待检测文件的相似度得分", "该文件中与参考代码相似的比例（0~1）。")
+    add_bold_paragraph(doc, "参考文件的相似度得分", "参考代码中出现在待检测文件中的比例（0~1）。")
+    add_bold_paragraph(doc, "Token 重叠数", "两个文件中相同的 token（代码片段）数量。")
+    add_bold_paragraph(doc, "开源占比", "相似行数在待检测文件总行数中的占比（抄袭比例）。")
+    add_bold_paragraph(doc, "待检测文件总行数", "代码文件总行数。")
+    add_bold_paragraph(doc, "相似行数", "被检测为相似或可疑的代码行数。")
+
+    # 二、文件级代码检测结果
+    doc.add_paragraph()
+
+    h1 = doc.add_paragraph()
+    h1_run = h1.add_run("3、文件级代码检测结果")
+    set_run_font(h1_run, bold=True)
+    
+    
+    for i, item in enumerate(stored_code_values, start=1):
+        doc.add_heading(f"第 {i} 条记录", level=3)
+        doc.add_paragraph(f"待检测文件：{item['code2']}")
+        doc.add_paragraph(f"参考文件：{item['code3']}")
+        doc.add_paragraph(f"待检测文件的相似度得分：{item['code0'] * 100:.2f}%")
+        doc.add_paragraph(f"参考文件的相似度得分：{item['code1'] * 100:.2f}%")
+        doc.add_paragraph(f"Token 重叠数：{item['code6']}")
+        doc.add_paragraph(f"相似行数：{item['code9']}")
+        doc.add_paragraph(f"待检测文件总行数：{item['code8']}")
+        doc.add_paragraph(f"开源占比：{item['code7'] * 100:.2f}%")
+
+        doc.add_paragraph(
+            f"解析：该比对显示待检测文件中有 {item['code0'] * 100:.2f}% 的内容与参考文件高度相似，"
+            f"且参考文件中 {item['code1'] * 100:.2f}% 的代码出现在此文件中，应引起关注。"
+        )
+        
+   # 三、字符级详细代码比对结果
+   # 添加空行
+    doc.add_paragraph()
+
+    h1 = doc.add_paragraph()
+    h1_run = h1.add_run("4、字符级详细代码比对结果")
+    set_run_font(h1_run, bold=True)
+    valid_matches = []
+    
+    # 改进数据处理逻辑，正确处理来自Java的ArrayList和String类型数据
+    print(f"处理字符级详细代码比对数据，数据类型: {type(data)}")
+    
     try:
-        # 确保输出目录存在
+        # 处理Java ArrayList类型数据
+        if str(type(data)).find('java.util.ArrayList') >= 0:
+            # 将每个Java字符串转换为Python字典
+            processed_data = []
+            for i in range(len(data)):
+                item_str = str(data[i])
+                try:
+                    # 去除可能的前后引号
+                    if item_str.startswith('"') and item_str.endswith('"'):
+                        item_str = item_str[1:-1]
+                    # 处理Java字符串中的转义字符
+                    item_str = item_str.replace('\\"', '"')
+                    item_dict = json.loads(item_str)
+                    processed_data.append(item_dict)
+                except json.JSONDecodeError as e:
+                    print(f"无法解析Java字符串为JSON: {e}, 内容: {item_str[:100]}...")
+            data = processed_data
+            print(f"成功处理Java ArrayList数据，转换为{len(data)}个Python对象")
+    
+        # 确保data是一个列表
+        if not isinstance(data, list):
+            if isinstance(data, str):
+                try:
+                    data = json.loads(data)
+                except:
+                    data = [data]
+            else:
+                data = [data]
+                
+        # 遍历处理每个条目
+        for entry in data:
+            # 确保entry是字典类型
+            if isinstance(entry, str):
+                try:
+                    entry = json.loads(entry)
+                except Exception as e:
+                    print(f"无法解析条目为JSON: {e}, 内容: {entry[:100]}...")
+                    continue
+                    
+            if not isinstance(entry, dict):
+                print(f"跳过非字典类型的条目: {type(entry)}")
+                continue
+                
+            for key, val in entry.items():
+                if key == "sus_length" or key == "src_length":
+                    continue
+                if not val or not isinstance(val, dict) or "feature1" not in val:
+                    continue
+
+                if "suspicious-document" in key and "source-document" in key:
+                    # 从键名中提取文件名
+                    parts = key.split("source-document")
+                    if len(parts) == 2:
+                        sus_file = parts[0].replace("suspicious-document", "suspicious-document ")
+                        src_file = "source-document" + parts[1]
+                    else:
+                        sus_file = key.split("source-document")[0]
+                        src_file = "source-document" + key.split("source-document")[1]
+                else:
+                    sus_file = "未知"
+                    src_file = "未知"
+
+                feature = val["feature1"]
+                sus_len = entry.get("sus_length", "未知")
+                src_len = entry.get("src_length", "未知")
+
+                valid_matches.append([
+                    sus_file,
+                    src_file,
+                    feature["offset"],
+                    feature["length"],
+                    feature["srcOffset"],
+                    feature["srcLength"],
+                    sus_len,
+                    src_len
+                ])
+    except Exception as e:
+        print(f"处理字符级比对数据时出现严重错误: {e}")
+        import traceback
+        traceback.print_exc()
+
+    if valid_matches:
+        print(f"成功提取{len(valid_matches)}条字符级比对结果记录")
+        table = doc.add_table(rows=1, cols=8)
+        table.style = "Table Grid"
+        table.autofit = False
+
+        col_widths = [Inches(2.2), Inches(2.2), Inches(1), Inches(1),
+                    Inches(1), Inches(1), Inches(1), Inches(1)]
+
+        headers = [
+            "待检测文件路径", "参考文件路径",
+            "可疑文件中相似代码的起始偏移", "可疑文件中相似代码的字符长度",
+            "参考文件中相似代码的起始偏移", "参考文件中相似代码的字符长度",
+            "待检测文件总字符数", "参考文件总字符数"
+        ]
+
+        hdr_cells = table.rows[0].cells
+        for i, header in enumerate(headers):
+            cell = hdr_cells[i]
+            cell.text = header
+            cell.width = col_widths[i]
+
+            # 设置字体样式
+            paragraph = cell.paragraphs[0]
+            run = paragraph.runs[0]
+            run.bold = True
+            run.font.color.rgb = RGBColor(255, 255, 255)  # 白色字体
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+            # 设置表头背景色（蓝色）
+            cell._tc.get_or_add_tcPr().append(parse_xml(
+                r'<w:shd {} w:fill="4F81BD"/>'.format(nsdecls('w'))
+            ))
+
+        # 添加数据行（含斑马纹）
+        for idx, row_data in enumerate(valid_matches):
+            row_cells = table.add_row().cells
+            for i, value in enumerate(row_data):
+                cell = row_cells[i]
+                cell.text = str(value)
+                cell.width = col_widths[i]
+                cell.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+                # 允许自动换行
+                tc = cell._tc
+                tcPr = tc.get_or_add_tcPr()
+                tcPr.append(OxmlElement("w:noWrap"))
+                tcPr.remove(tcPr.xpath("w:noWrap")[0])  # 删除不换行限制
+
+                # 设置斑马纹背景色
+                if idx % 2 == 0:  # 奇数数据行背景浅灰色
+                    cell._tc.get_or_add_tcPr().append(parse_xml(
+                        r'<w:shd {} w:fill="D9D9D9"/>'.format(nsdecls('w'))
+                    ))
+    else:
+        doc.add_paragraph("未检测到任何字符级相似代码片段。")
+
+
+
+    # 保存报告
+    try:
         output_dir = os.path.dirname(output_file)
         if output_dir and not os.path.exists(output_dir):
             os.makedirs(output_dir)
-            
         doc.save(output_file)
         print(f"报告成功保存到: {output_file}")
     except Exception as e:
         print(f"保存文档时出错: {e}")
-        # 尝试保存到当前目录
-        fallback_path = os.path.basename(output_file)
-        doc.save(fallback_path)
-        output_file = fallback_path
-        print(f"报告已保存到备用位置: {fallback_path}")
     return output_file
 
 
+# 示例调用
 if __name__ == "__main__":
-    output_file = create_government_blockchain_report()
-    print(f"报告已生成: {output_file}")
-    print(f"报告已生成")
+    # stored_code_values = [
+    #     {
+    #         'code0': 0.4228965112870126,
+    #         'code1': 0.9918426103646834,
+    #         'code2': 'e:\\EL\\Server_Project\\Server_Project_hub\\copydetect_syn\\uploads\\suspicious-document000001.java',
+    #         'code3': 'e:\\EL\\Server_Project\\Server_Project_hub\\copydetect_syn\\downs\\source-document0172528.java',
+    #         'code6': 2885,
+    #         'code7': 0.5289256198347108,
+    #         'code8': 242,
+    #         'code9': 128
+    #     },
+    #     {
+    #         'code0': 0.4183523893286426,
+    #         'code1': 0.9995872884853487,
+    #         'code2': 'e:\\EL\\Server_Project\\Server_Project_hub\\copydetect_syn\\uploads\\suspicious-document000001.java',
+    #         'code3': 'e:\\EL\\Server_Project\\Server_Project_hub\\copydetect_syn\\downs\\source-document1070483.java',
+    #         'code6': 2854,
+    #         'code7': 0.30165289256198347,
+    #         'code8': 242,
+    #         'code9': 73
+    #     }
+    # ]
+    
+    # data  =   [{"suspicious-document000001.javasource-document1070483.java":
+    #             {"feature1":{"offset":12,"length":2854,"srcOffset":0,"srcLength":2422}},"sus_length":6822,"src_length":2423}, 
+    #         {"suspicious-document000001.javasource-document2264813.java":
+    #             {"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":2159}},"sus_length":6822,"src_length":2228}, 
+    #         {"suspicious-document000001.javasource-document2264819.java":
+    #             {"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":1871}},"sus_length":6822,"src_length":1940},
+    #         {"suspicious-document000001.javasource-document0172528.java":
+    #             {"feature1":{"offset":1688,"length":2885,"srcOffset":0,"srcLength":2067}},"sus_length":6822,"src_length":2084}, 
+    #         {"suspicious-document000001.javasource-document2264812.java":
+    #             {"feature1":{"offset":4573,"length":2178,"srcOffset":295,"srcLength":2302}},"sus_length":6822,"src_length":2696}, 
+    #         {"suspicious-document000001.javasource-document2264820.java":
+    #             {"feature1":{"offset":4573,"length":2178,"srcOffset":0,"srcLength":1767}},"sus_length":6822,"src_length":1866}, 
+    #         {"suspicious-document000001.javasource-document2264815.java":
+    #             {"feature1":{"offset":4573,"length":2178,"srcOffset":380,"srcLength":5235}},"sus_length":6822,"src_length":5684}, 
+    #         {"suspicious-document000001.javasource-document2264818.java":
+    #             {"feature1":{"offset":4573,"length":2178,"srcOffset":384,"srcLength":6339}},"sus_length":6822,"src_length":6794}, 
+    #         {"suspicious-document000001.javasource-document2264814.java":
+    #             {"feature1":{"offset":4573,"length":2178,"srcOffset":1347,"srcLength":3718}},"sus_length":6822,"src_length":6823}, 
+    #         {"suspicious-document000001.javasource-document0172522.java":
+    #             {},"sus_length":6822,"src_length":335}, 
+    #         {"suspicious-document000001.javasource-document0172544.java":
+    #             {},"sus_length":6822,"src_length":393}
+    #         ]
+    
+    
+    # output_file = create_government_blockchain_report(stored_code_values, data=data)
+    print(f"报告已生成: ")

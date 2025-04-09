@@ -132,7 +132,7 @@ def upload_file():
       <input type=submit value=上传>
     </form>"""
     n = 10
-    top_n = 20
+    top_n = 10
     index_name = "myindex_java"
     check_file_suf = ".txt"
     file_path = ""
@@ -195,7 +195,7 @@ def upload_file():
                         "_source": {},
                         "query": {"bool": {"should": should_clauses}},
                         "from": 0,
-                        "size": 20,
+                        "size": 10,
                     }
                     response = es.search(
                         index=index_name, body=query_body, request_timeout=30
@@ -222,7 +222,7 @@ def upload_file():
                 "_source": {},
                 "query": {"bool": {"should": should_clauses}},
                 "from": 0,
-                "size": 20,
+                "size": 10,
             }
 
             if len(query_phrases) > 0:
@@ -282,7 +282,9 @@ def upload_file():
                 pairs_path, upload_folder, search_folder
             )  # 调用类中的add方法
             print("------")
-            print(data)
+            print("data 的类型是：", type(data))
+            print("data 的内容是：", data)
+            print("------")
             if data is None or len(data) == 0:
                 print("没有数据或数据为空列表")
                 return jsonify({
