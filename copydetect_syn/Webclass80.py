@@ -290,34 +290,30 @@ def upload_file():
                     "message": "未找到相似代码，请尝试上传其他文件"
                 }), 400
             else:
-                code_main.mymain([upload_folder], [search_folder], data)  # 进行代码对比分析
-                return '', 204  # 204 No Content
-
+                code_main.mymain([upload_folder], [search_folder], data)
+                
+                # 创建一个线程来处理清理工作
+                def cleanup_files():
+                    time.sleep(5)  # 如果真的需要延迟，可以在后台线程中执行
+                    try:
+                        if os.path.exists(upload_folder):
+                            util.delete_folder_contents(upload_folder)
+                        if os.path.exists(search_folder):
+                            util.delete_folder_contents(search_folder)
+                    except Exception as e:
+                        print(f"清理文件时出错: {e}")
+                
+                # 启动后台线程进行清理
+                threading.Thread(target=cleanup_files).start()
+                
+                return '', 204  # 立即返回响应，不等待清理完成
 
     except Exception as e:
         print("❌ 发生异常了！")
         print(f"🔍 异常类型: {type(e).__name__}")
         print(f"📌 异常信息: {e}")
-        traceback.print_exc()  # 打印完整的异常堆栈
-
-    finally:
-        while True:
-            try:
-                time.sleep(5)
-                # 删除临时上传文件
-                if os.path.exists(upload_folder):
-                    util.delete_folder_contents(upload_folder)
-                if os.path.exists(search_folder):
-                    util.delete_folder_contents(search_folder)
-                break
-            except Exception as e:
-                print(e)
-                if os.path.exists(upload_folder):
-                    util.delete_folder_contents(upload_folder)
-                if os.path.exists(search_folder):
-                    util.delete_folder_contents(search_folder)
-
-    return htmlres
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
