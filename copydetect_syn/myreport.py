@@ -15,7 +15,10 @@ from markupsafe import escape
 import defaults
 from _config import CopydetectConfig
 import os
+import numpy as np
+from flask import session
 current_dir = os.path.dirname(os.path.abspath(__file__))
+
 
 class CodeFingerprint:
    
@@ -49,6 +52,10 @@ class CodeFingerprint:
         self.filename = file
         self.raw_code = code
         self.k = k
+
+
+
+
 
 class Report:
 
@@ -527,12 +534,13 @@ class Report:
         code_list.sort(key=lambda x: -x[0])
         return code_list
 
+
+
     def generate_html_report(self, output_mode="save"):
         if len(self.similarity_matrix) == 0:
             logging.error("Cannot generate report: no files compared")
             return
 
-        # 生成两种高亮方式的代码列表
         default_code_list = self.get_copied_code_list("default")
         char_level_code_list = self.get_copied_code_list("char_level")
 
@@ -599,10 +607,10 @@ class Report:
                 print(
                     f"Output saved to {self.conf.out_file.replace('//', '/')}"
                 )
-            if self.conf.autoopen:
-                webbrowser.open(
-                    'file://' + str(Path(self.conf.out_file).resolve())
-                )
+            # if self.conf.autoopen:
+            #     webbrowser.open(
+            #         'file://' + str(Path(self.conf.out_file).resolve())
+            #     )
         elif output_mode == "return":
             return output
         else:

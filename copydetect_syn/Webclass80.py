@@ -6,6 +6,8 @@ from flask import (
     send_from_directory,
     render_template,
     redirect,
+    jsonify,
+    session
 )
 import re
 from elasticsearch import Elasticsearch
@@ -18,8 +20,10 @@ import os
 import util
 import threading
 import traceback
+import secrets
 
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(16)
 CORS(app)
 
 
@@ -68,6 +72,19 @@ def get_es_client():
 @app.route("/report")
 def serve_report():
     return send_from_directory("./", "report.html")
+
+
+
+
+@app.route("/down_word", methods=["GET"])  # 使用 GET 请求
+def down_word():
+    print("目前进入了报告后端页面")
+    
+    # 不需要获取 JSON 数据，只返回成功的响应
+    return jsonify({"message": "Word 报告生成中..."})
+
+
+
 
 
 # 上传文件
@@ -234,9 +251,11 @@ def upload_file():
             print(data)
             code_main.mymain([upload_folder], [search_folder], data)  # 进行代码对比分析
 
-            return render_template_string(
-                "{file_contents}", file_contents="./report.html"
-            )
+            # return render_template_string(
+            #     "{file_contents}", file_contents="./report.html"
+            # )
+            return '', 204  # 204 No Content
+
 
     except Exception as e:
         print("❌ 发生异常了！")
