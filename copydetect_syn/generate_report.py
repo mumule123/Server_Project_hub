@@ -263,9 +263,9 @@ def create_government_blockchain_report(
                     Inches(1), Inches(1), Inches(1), Inches(1)]
 
         headers = [
-            "待检测文件路径", "参考文件路径",
-            "可疑文件中相似代码的起始偏移", "可疑文件中相似代码的字符长度",
-            "参考文件中相似代码的起始偏移", "参考文件中相似代码的字符长度",
+            "待检测文件", "参考文件",
+            "可疑文件起始偏移", "可疑文件相似代码字符长度",
+            "参考文件起始偏移", "参考文件相似代码字符长度",
             "待检测文件总字符数", "参考文件总字符数"
         ]
 
@@ -280,21 +280,28 @@ def create_government_blockchain_report(
             run = paragraph.runs[0]
             run.bold = True
             run.font.color.rgb = RGBColor(255, 255, 255)  # 白色字体
+            # 表头中文字体设置为微软雅黑
+            run.font.name = "微软雅黑"
+            run._element.rPr.rFonts.set(qn('w:eastAsia'), '微软雅黑')
+            run.font.size = Pt(12)  # 设置字体大小为12pt
+            run.font.bold = True  # 设置加粗
             paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
             # 设置表头背景色（蓝色）
-            cell._tc.get_or_add_tcPr().append(parse_xml(
-                r'<w:shd {} w:fill="4F81BD"/>'.format(nsdecls('w'))
-            ))
+            cell._tc.get_or_add_tcPr().append(
+                parse_xml(r'<w:shd {} w:fill="4874CB"/>'.format(nsdecls("w")))
+            )
 
         # 添加数据行（含斑马纹）
         for idx, row_data in enumerate(valid_matches):
             row_cells = table.add_row().cells
             for i, value in enumerate(row_data):
                 cell = row_cells[i]
-                cell.text = str(value)
+                paragraph = cell.paragraphs[0]
+                run = paragraph.add_run(str(value))  # 添加单元格内容
+                set_run_font(run, size=Pt(11))  # 使用 set_run_font 设置字体
                 cell.width = col_widths[i]
-                cell.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
                 # 允许自动换行
                 tc = cell._tc
@@ -302,11 +309,15 @@ def create_government_blockchain_report(
                 tcPr.append(OxmlElement("w:noWrap"))
                 tcPr.remove(tcPr.xpath("w:noWrap")[0])  # 删除不换行限制
 
-                # 设置斑马纹背景色
-                if idx % 2 == 0:  # 奇数数据行背景浅灰色
-                    cell._tc.get_or_add_tcPr().append(parse_xml(
-                        r'<w:shd {} w:fill="D9D9D9"/>'.format(nsdecls('w'))
-                    ))
+                # 背景色用powerpoint的默认颜色
+                if idx % 2 == 0:  # 奇数数据行背景色
+                    cell._tc.get_or_add_tcPr().append(
+                        parse_xml(r'<w:shd {} w:fill="CFD6EC"/>'.format(nsdecls("w")))
+                    )
+                else:  # 偶数行背景色
+                    cell._tc.get_or_add_tcPr().append(
+                        parse_xml(r'<w:shd {} w:fill="E9ECF6"/>'.format(nsdecls("w")))
+                    )
     else:
         doc.add_paragraph("未检测到任何字符级相似代码片段。")
 
