@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件上传</title>
+    <title>系统首页</title>
     <!-- 本地 Bootstrap 样式 -->
     <link rel="stylesheet" href="/static/bootstrap.min.css">
     <!-- Font Awesome 样式 -->
@@ -529,7 +529,13 @@
         function handleFileSelect(event) {
             const files = event.target.files;
             fileList.innerHTML = '';
+            
+            const uploadStatus = document.getElementById('uploadStatus');
+            uploadStatus.textContent = '';
+            uploadStatus.classList.remove('success', 'error');
+            uploadStatus.style.display = 'none';
 
+            
             if (files.length === 0) {
                 fileList.innerHTML = '<li class="no-files">暂无文件，请点击下方按钮选择文件</li>';
                 updateUploadButtonState();
@@ -663,6 +669,13 @@
             
             // 更新上传按钮状态
             updateUploadButtonState();
+
+            if (window.selectedFiles.length === 0) {
+                const uploadStatus = document.getElementById('uploadStatus');
+                uploadStatus.textContent = '';
+                uploadStatus.classList.remove('success', 'error');
+                uploadStatus.style.display = 'none';
+            }
         }
 
         function uploadFiles() {
@@ -697,29 +710,44 @@
                 body: formData
             })
             .then(response => {
-                // 检查响应状态
-                if (!response.ok) {
-                    // 如果状态不是2xx，解析JSON响应
-                    return response.json().then(errorData => {
-                        // 特殊情况：检查是否是"可放心使用"的消息
-                        if (errorData.message && errorData.message.includes("未发现明显复用情况，可放心使用")) {
-                            return { 
-                                isSuccess: true, 
-                                message: errorData.message 
+                // 检查响应内容类型
+                const contentType = response.headers.get("content-type");
+                
+                if (contentType && contentType.includes("application/json")) {
+                    // 处理JSON响应（成功或错误信息）
+                    return response.json().then(jsonData => {
+                        if (response.ok) {
+                            // 处理成功的JSON响应
+                            return {
+                                isSuccess: true,
+                                isReport: false,
+                                message: jsonData.message
                             };
+                        } else {
+                            // 处理错误的JSON响应
+                            throw new Error(jsonData.message || '上传失败');
                         }
-                        // 其他真实错误，将在catch块中处理
-                        throw new Error(errorData.message || '上传失败');
                     });
-                }
-                // 如果状态是2xx，返回响应文本
-                return response.text().then(text => {
+                } else if (response.status === 204) {
+                    // 处理无内容响应（表示有报告）
                     return {
                         isSuccess: true,
-                        isReport: true,
-                        data: text
+                        isReport: true
                     };
-                });
+                } else {
+                    // 处理其他响应
+                    return response.text().then(text => {
+                        if (response.ok) {
+                            return {
+                                isSuccess: true,
+                                isReport: true,
+                                data: text
+                            };
+                        } else {
+                            throw new Error(text || '上传失败');
+                        }
+                    });
+                }
             })
             .then(result => {
                 console.log('处理结果:', result);

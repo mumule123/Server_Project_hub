@@ -283,16 +283,11 @@ def upload_file():
             data = calc.get_check_params(
                 pairs_path, upload_folder, search_folder
             )  # 调用类中的add方法
-            # print("------")
-            # print("data 的类型是：", type(data))
-            # print("data 的内容是：", data)
-            # print("------")
             if data is None or len(data) == 0:
-                print("没有数据或数据为空列表")
                 return jsonify({
-                    "status": "error",
+                    "status": "success",
                     "message": "根据自主率代码库检索，该代码文件未发现明显复用情况，可放心使用"
-                }), 400
+                }), 200  # 修改为200状态码表示成功
             else:
                 code_main.mymain([upload_folder], [search_folder], data)
                 
