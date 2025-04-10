@@ -1,7 +1,7 @@
 from docx import Document
 from docx.shared import Pt,Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-import os
+import os,re
 from datetime import datetime
 from docx.shared import Inches, RGBColor
 from docx.oxml.ns import qn
@@ -225,14 +225,21 @@ def create_government_blockchain_report(
                     # 从键名中提取文件名
                     parts = key.split("source-document")
                     if len(parts) == 2:
-                        sus_file = parts[0].replace("suspicious-document", "suspicious-document ")
-                        src_file = "source-document" + parts[1]
+                        sus_file = parts[0]
+                        src_file = parts[1]
                     else:
                         sus_file = key.split("source-document")[0]
-                        src_file = "source-document" + key.split("source-document")[1]
+                        src_file = key.split("source-document")[1]
                 else:
                     sus_file = "未知"
                     src_file = "未知"
+                # 提取待检测文件名中的扩展名前 8 到 10 个字符，并保留扩展名
+                match = re.search(r"([^\\\/]+)(\.[^\\\/]+)$", sus_file)  # 提取文件名和扩展名
+                if match:
+                    filename = match.group(1)  # 获取文件名部分（不含扩展名）
+                    extension = match.group(2)  # 获取扩展名
+                    sus_file = filename[-10:] if len(filename) > 10 else filename  # 截取最后 8 到 10 个字符
+                    sus_file = "*" + sus_file + extension  # 添加扩展名
 
                 feature = val["feature1"]
                 sus_len = entry.get("sus_length", "未知")
