@@ -45,7 +45,7 @@ def create_government_blockchain_report(
 
         # 设置中文字体为宋体
         run._element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
-    
+
     # 辅助函数：添加带有粗体标签的段落
     def add_bold_paragraph(doc, field_title, description):
         p = doc.add_paragraph()
@@ -53,7 +53,7 @@ def create_government_blockchain_report(
         set_run_font(run1, bold=True)
         run2 = p.add_run(description)
         set_run_font(run2)
-    
+
     # 辅助函数：添加字段值
     def add_field_value(doc, label, value):
         p = doc.add_paragraph()
@@ -70,13 +70,44 @@ def create_government_blockchain_report(
         section.left_margin = Cm(3.17)
         section.right_margin = Cm(3.17)
 
-    # === 第一页：封面 ===
     # 添加页眉标题
     header_para = doc.sections[0].header.paragraphs[0]
     header_run = header_para.add_run("源代码自研率检测报告")
     header_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
     set_run_font(header_run, size=Pt(12))
 
+    # 添加页脚和页码
+    def add_page_number(document):
+        section = document.sections[0]
+        footer = section.footer
+        footer_para = footer.paragraphs[0]
+        footer_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # 创建页码文本
+        page_num_run = footer_para.add_run()
+        fldChar1 = OxmlElement("w:fldChar")
+        fldChar1.set(qn("w:fldCharType"), "begin")
+
+        instrText = OxmlElement("w:instrText")
+        instrText.set(qn("xml:space"), "preserve")
+        instrText.text = "PAGE"
+
+        fldChar2 = OxmlElement("w:fldChar")
+        fldChar2.set(qn("w:fldCharType"), "end")
+
+        page_num_run._r.append(fldChar1)
+        page_num_run._r.append(instrText)
+        page_num_run._r.append(fldChar2)
+
+        # 设置页码字体
+        font = page_num_run.font
+        font.name = "Times New Roman"
+        font.size = Pt(10)
+
+    # 添加页码
+    add_page_number(doc)
+
+    # === 第一页：封面 ===
     # 添加主标题（居中）
     for _ in range(8):  # 添加空行
         doc.add_paragraph().alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -114,7 +145,7 @@ def create_government_blockchain_report(
     # 添加简介文本
     intro = doc.add_paragraph()
     intro_run = intro.add_run(
-        "本报告对上传代码自研率进行了检测，包括代码同源分析、代码引用、代码行级开源占比和代码文件级开源占比。"
+        "    本报告对上传代码自研率进行了检测，包括代码同源分析、代码引用、代码行级开源占比和代码文件级开源占比。"
     )
     set_run_font(intro_run)
 
@@ -126,7 +157,7 @@ def create_government_blockchain_report(
     set_run_font(h1_run, bold=True)
 
     # 添加项目简介内容
-    intro_text = """源代码安全审计的主要目的是提高源代码质量，通过对程序源代码进行检查和分析，发现源代码在软件设计、测试、应用部署等各阶段中可能存在的安全缺陷或安全漏洞，从源头上避免潜在的安全风险。"""
+    intro_text = """    源代码安全审计的主要目的是提高源代码质量，通过对程序源代码进行检查和分析，发现源代码在软件设计、测试、应用部署等各阶段中可能存在的安全缺陷或安全漏洞，从源头上避免潜在的安全风险。"""
     intro_para = doc.add_paragraph()
     intro_run = intro_para.add_run(intro_text)
     set_run_font(intro_run)
