@@ -87,8 +87,13 @@ def down_word():
 
     # 获取当前应用所在目录
     current_dir = os.path.dirname(os.path.abspath(__file__))
+    # 确保document目录存在
+    document_dir = os.path.join(current_dir, 'document')
+    if not os.path.exists(document_dir):
+        os.makedirs(document_dir)
+        
     output_filename = WORD_REPORT_NAME  # 配置文件中的报告名称
-    output_path = os.path.join(current_dir, output_filename)
+    output_path = os.path.join(document_dir, output_filename)
 
     if stored_code_values:
         # 生成报告并获取文件路径
@@ -106,9 +111,8 @@ def down_word():
     if os.path.exists(output_path):
         print(f"准备发送文件: {output_path}")
         # 修正：正确分离目录和文件名
-        directory = os.path.dirname(output_path)
-        filename = os.path.basename(output_path)
-        return send_from_directory(directory, filename, as_attachment=True)
+        # 现在directory是document子目录
+        return send_from_directory(document_dir, output_filename, as_attachment=True)
     else:
         print(f"文件不存在: {output_path}")
         return jsonify({
@@ -279,15 +283,15 @@ def upload_file():
             data = calc.get_check_params(
                 pairs_path, upload_folder, search_folder
             )  # 调用类中的add方法
-            print("------")
-            print("data 的类型是：", type(data))
-            print("data 的内容是：", data)
-            print("------")
+            # print("------")
+            # print("data 的类型是：", type(data))
+            # print("data 的内容是：", data)
+            # print("------")
             if data is None or len(data) == 0:
                 print("没有数据或数据为空列表")
                 return jsonify({
                     "status": "error",
-                    "message": "未找到相似代码，请尝试上传其他文件"
+                    "message": "根据自主率代码库检索，该代码文件未发现明显复用情况，可放心使用"
                 }), 400
             else:
                 code_main.mymain([upload_folder], [search_folder], data)
@@ -314,6 +318,13 @@ def upload_file():
         print(f"📌 异常信息: {e}")
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

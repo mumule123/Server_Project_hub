@@ -11,10 +11,12 @@ from docx.oxml.ns import nsdecls
 import json
 from config import WORD_REPORT_NAME # 配置文件
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 def create_government_blockchain_report(
     stored_code_values,
     data,
-    output_file=WORD_REPORT_NAME,
+    output_file=os.path.join(current_dir,'document',WORD_REPORT_NAME)
 ):
     # 若 data 是字符串则先解析
     if isinstance(data, str):
@@ -160,9 +162,7 @@ def create_government_blockchain_report(
         )
 
     # 三、字符级详细代码比对结果
-    # 添加空行
     doc.add_paragraph()
-
     h1 = doc.add_paragraph()
     h1_run = h1.add_run("4、字符级详细代码比对结果")
     set_run_font(h1_run, bold=True)

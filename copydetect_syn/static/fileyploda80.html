@@ -133,6 +133,14 @@
             background-color: #f8d7da;
             border: 1px solid #f5c6cb;
         }
+        
+        /* 成功状态提示 */
+        .upload-status.success {
+            display: block;
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
 
         /* 按钮组：水平排列的选择文件和上传文件 */
         .button-group {
@@ -668,6 +676,7 @@
             
             // 清除之前的错误信息
             document.getElementById('uploadStatus').classList.remove('error');
+            document.getElementById('uploadStatus').classList.remove('success');
             document.getElementById('uploadStatus').textContent = '';
             
             const formData = new FormData();
@@ -692,17 +701,43 @@
                 if (!response.ok) {
                     // 如果状态不是2xx，解析JSON响应
                     return response.json().then(errorData => {
-                        // 抛出带有错误消息的错误，将在catch块中处理
+                        // 特殊情况：检查是否是"可放心使用"的消息
+                        if (errorData.message && errorData.message.includes("未发现明显复用情况，可放心使用")) {
+                            return { 
+                                isSuccess: true, 
+                                message: errorData.message 
+                            };
+                        }
+                        // 其他真实错误，将在catch块中处理
                         throw new Error(errorData.message || '上传失败');
                     });
                 }
                 // 如果状态是2xx，返回响应文本
-                return response.text();
+                return response.text().then(text => {
+                    return {
+                        isSuccess: true,
+                        isReport: true,
+                        data: text
+                    };
+                });
             })
-            .then(data => {
-                console.log('上传成功:', data);
-                // 上传成功，跳转到报告页面
-                window.location.href = `${window.location.origin}/static/report.html`;
+            .then(result => {
+                console.log('处理结果:', result);
+                // 隐藏加载提示
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                if (result.isSuccess) {
+                    if (result.isReport) {
+                        // 有报告，跳转到报告页面
+                        window.location.href = `${window.location.origin}/static/report.html`;
+                    } else {
+                        // 显示成功消息（绿色提示）
+                        const uploadStatus = document.getElementById('uploadStatus');
+                        uploadStatus.textContent = result.message;
+                        uploadStatus.classList.add('success');
+                        uploadStatus.style.display = 'block';
+                    }
+                }
             })
             .catch(error => {
                 // 隐藏加载提示
