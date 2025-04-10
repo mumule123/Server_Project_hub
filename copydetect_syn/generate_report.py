@@ -292,14 +292,22 @@ def create_government_blockchain_report(
             run.font.size = Pt(9)  # 设置字体大小为9pt
             run._element.rPr.rFonts.set(qn('w:eastAsia'), '微软雅黑')
             run.font.bold = True  # 设置加粗
+
+            # 设置水平居中对齐
             paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-            # 设置表头背景色（蓝色）
+            # 设置垂直居中对齐
+            tc = cell._tc
+            tcPr = tc.get_or_add_tcPr()
+            vertical_alignment = parse_xml(r'<w:vAlign {} w:val="center"/>'.format(nsdecls('w')))
+            tcPr.append(vertical_alignment)
+
+            # 设置表头背景色（PowerPoint默认的蓝色）
             cell._tc.get_or_add_tcPr().append(
                 parse_xml(r'<w:shd {} w:fill="4874CB"/>'.format(nsdecls("w")))
             )
 
-        # 添加数据行（含斑马纹）
+        # 添加数据行
         for idx, row_data in enumerate(valid_matches):
             row_cells = table.add_row().cells
             for i, value in enumerate(row_data):
@@ -308,7 +316,16 @@ def create_government_blockchain_report(
                 run = paragraph.add_run(str(value))  # 添加单元格内容
                 set_run_font(run, size=Pt(11))  # 使用 set_run_font 设置字体
                 cell.width = col_widths[i]
+
+                # 设置水平居中对齐
                 paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+                # 设置垂直居中对齐
+                tc = cell._tc
+                tcPr = tc.get_or_add_tcPr()
+                # 创建垂直居中XML元素
+                vertical_alignment = parse_xml(r'<w:vAlign {} w:val="center"/>'.format(nsdecls('w')))
+                tcPr.append(vertical_alignment)
 
                 # 允许自动换行
                 tc = cell._tc
