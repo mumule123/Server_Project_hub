@@ -289,8 +289,8 @@ def create_government_blockchain_report(
             run.font.color.rgb = RGBColor(255, 255, 255)  # 白色字体
             # 表头中文字体设置为微软雅黑
             run.font.name = "微软雅黑"
+            run.font.size = Pt(9)  # 设置字体大小为9pt
             run._element.rPr.rFonts.set(qn('w:eastAsia'), '微软雅黑')
-            run.font.size = Pt(12)  # 设置字体大小为12pt
             run.font.bold = True  # 设置加粗
             paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
