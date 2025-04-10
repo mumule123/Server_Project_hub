@@ -93,6 +93,7 @@ def create_government_blockchain_report(
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title_run = title.add_run("源代码自研率检测报告")
     set_run_font(title_run, size=Pt(16), bold=True)
+    title_run.element.rPr.rFonts.set(qn("w:eastAsia"), "微软雅黑")
 
     # 添加简介文本
     intro = doc.add_paragraph()
@@ -118,7 +119,7 @@ def create_government_blockchain_report(
     doc.add_paragraph()
 
     h1 = doc.add_paragraph()
-    h1_run = h1.add_run("2、字段说明")
+    h1_run = h1.add_run("2. 字段说明")
     set_run_font(h1_run, bold=True)
 
     doc.add_paragraph("以下是检测系统输出的字段说明：")
@@ -126,8 +127,9 @@ def create_government_blockchain_report(
     def add_bold_paragraph(doc, field_title, description):
         p = doc.add_paragraph()
         run1 = p.add_run(f"{field_title}：")
-        run1.bold = True
+        set_run_font(run1, bold=True)
         run2 = p.add_run(description)
+        set_run_font(run2)
 
     add_bold_paragraph(doc, "待检测代码路径", "用户上传、参与查重的代码文件路径。")
     add_bold_paragraph(doc, "参考代码路径", "系统比对的原始或参考源代码路径。")
@@ -142,29 +144,42 @@ def create_government_blockchain_report(
     doc.add_paragraph()
 
     h1 = doc.add_paragraph()
-    h1_run = h1.add_run("3、文件级代码检测结果")
+    h1_run = h1.add_run("3. 文件级代码检测结果")
     set_run_font(h1_run, bold=True)
 
     for i, item in enumerate(stored_code_values, start=1):
-        doc.add_heading(f"第 {i} 条记录", level=3)
-        doc.add_paragraph(f"待检测文件：{item['code2']}")
-        doc.add_paragraph(f"参考文件：{item['code3']}")
-        doc.add_paragraph(f"待检测文件的相似度得分：{item['code0'] * 100:.2f}%")
-        doc.add_paragraph(f"参考文件的相似度得分：{item['code1'] * 100:.2f}%")
-        doc.add_paragraph(f"Token 重叠数：{item['code6']}")
-        doc.add_paragraph(f"相似行数：{item['code9']}")
-        doc.add_paragraph(f"待检测文件总行数：{item['code8']}")
-        doc.add_paragraph(f"开源占比：{item['code7'] * 100:.2f}%")
+        heading = doc.add_heading(f"第 {i} 条记录", level=3)
+        for run in heading.runs:
+            set_run_font(run, bold=True)
 
-        doc.add_paragraph(
+        def add_field_value(label, value):
+            p = doc.add_paragraph()
+            label_run = p.add_run(f"{label}：")
+            set_run_font(label_run, bold=True)
+            value_run = p.add_run(str(value))
+            set_run_font(value_run)
+
+        add_field_value("待检测文件", item["code2"])
+        add_field_value("参考文件", item["code3"])
+        add_field_value("待检测文件的相似度得分", f"{item['code0'] * 100:.2f}%")
+        add_field_value("参考文件的相似度得分", f"{item['code1'] * 100:.2f}%")
+        add_field_value("Token 重叠数", item["code6"])
+        add_field_value("相似行数", item["code9"])
+        add_field_value("待检测文件总行数", item["code8"])
+        add_field_value("开源占比", f"{item['code7'] * 100:.2f}%")
+
+        # 添加解析段落
+        analysis = doc.add_paragraph()
+        analysis_run = analysis.add_run(
             f"解析：该比对显示待检测文件中有 {item['code0'] * 100:.2f}% 的内容与参考文件高度相似，"
             f"且参考文件中 {item['code1'] * 100:.2f}% 的代码出现在此文件中，应引起关注。"
         )
+        set_run_font(analysis_run)
 
     # 三、字符级详细代码比对结果
     doc.add_paragraph()
     h1 = doc.add_paragraph()
-    h1_run = h1.add_run("4、字符级详细代码比对结果")
+    h1_run = h1.add_run("4. 字符级详细代码比对结果")
     set_run_font(h1_run, bold=True)
     valid_matches = []
 
