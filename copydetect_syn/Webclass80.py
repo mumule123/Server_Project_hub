@@ -15,7 +15,7 @@ import code_main
 from flask_cors import CORS
 import jpype
 import os
-import generate_report
+import generate_pdf,generate_report
 
 import util
 import threading
@@ -23,7 +23,7 @@ import traceback
 import secrets
 from myreport import Report
 
-from config import WORD_REPORT_NAME # 配置文件
+from config import WORD_REPORT_NAME,PDF_REPORT_NAME
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -120,6 +120,48 @@ def down_word():
             "path": output_path
         }), 404
 
+@app.route("/down_pdf", methods=["GET"])
+def down_pdf():
+    global data
+
+    # 从myreport.py中获取保存的代码值
+    from myreport import stored_code_values
+
+    # 获取当前应用所在目录
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # 确保document目录存在
+    document_dir = os.path.join(current_dir, 'document')
+    if not os.path.exists(document_dir):
+        os.makedirs(document_dir)
+        
+    output_filename = PDF_REPORT_NAME  # 配置文件中的报告名称
+    output_path = os.path.join(document_dir, output_filename)
+
+    if stored_code_values:
+        # 生成报告并获取文件路径
+        try:
+            output_file = generate_pdf.create_government_blockchain_report(
+                stored_code_values, data, output_path
+            )
+        except Exception as e:
+            print(f"生成报告时出错: {e}")
+            traceback.print_exc()
+    else:
+        print("警告：stored_code_values为空，无法生成报告")
+
+    # 检查文件是否存在
+    if os.path.exists(output_path):
+        print(f"准备发送文件: {output_path}")
+        # 修正：正确分离目录和文件名
+        # 现在directory是document子目录
+        return send_from_directory(document_dir, output_filename, as_attachment=True)
+    else:
+        print(f"文件不存在: {output_path}")
+        return jsonify({
+            "error": "报告文件不存在",
+            "path": output_path
+        }), 404
+
 
 # 上传文件
 @app.route("/upcode_file", methods=["POST"])
@@ -188,7 +230,7 @@ def upload_file():
             for i in range(len(words) - n + 1):
                 ngram = " ".join(words[i : i + n])
                 query_phrases.append(ngram)
-                if len(query_phrases) >= 5000:
+                if len(query_phrases) >= 1000:
                     tem_ans = []
                     should_clauses = [
                         {"match_phrase": {"desc": phrase}} for phrase in query_phrases
