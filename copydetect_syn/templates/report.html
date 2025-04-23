@@ -266,8 +266,8 @@ pre {
           <i class="bi bi-filetype-docx"></i> 下载 Word 格式
         </button>
         <div class="dropdown-divider"></div>
-        <button id="downloadPdfButton">
-          <i class="bi bi-filetype-pdf"></i> 下载 PDF 格式
+        <button id="downloadPdfButton" style="display: none;">
+          <i class="bi.bi-filetype-pdf"></i> 下载 PDF 格式
         </button>
       </div>
     </div>
@@ -430,8 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropdownArrow = document.getElementById('dropdownArrow');
     
     // 点击主下载按钮显示选项
-    downloadButton.addEventListener('click', function(event) {
-        event.stopPropagation();  // 新增
+    downloadButton.addEventListener('click', function() {
         downloadOptions.classList.toggle('show');
         // 切换箭头方向
         dropdownArrow.style.transform = downloadOptions.classList.contains('show') 
@@ -441,7 +440,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 点击页面其他地方关闭下拉菜单
     window.addEventListener('click', function(event) {
-        if (!event.target.closest('#downloadButton')){
+        if (!event.target.matches('.download-main-button') && 
+            !event.target.closest('.download-main-button')) {
             if (downloadOptions.classList.contains('show')) {
                 downloadOptions.classList.remove('show');
                 dropdownArrow.style.transform = 'rotate(0deg)';
@@ -451,7 +451,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 直接点击主按钮也触发HTML下载(默认功能)
     downloadButton.addEventListener('dblclick', function() {
-        event.stopPropagation();  // 防止双击也被页面关闭逻辑干扰
         downloadHTML();
     });
     
@@ -495,7 +494,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // PDF下载选项
   downloadPdfButton.addEventListener('click', function() {
     // 直接将窗口或标签页重定向到下载地址，触发浏览器的下载功能
-    window.location.href = '/down_pdf';
+    // window.location.href = '/down_pdf';
+
+    // 临时显示的提示消息
+    alert('该功能暂未上线，会尽快推出。');
 
     // 关闭下拉菜单和恢复箭头方向
     downloadOptions.classList.remove('show');
@@ -506,37 +508,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 切换高亮方式的函数
 function switchHighlight(codeId, mode) {
-  const defaultLeft = document.getElementById(`default-code-left-${codeId}`);
-  const defaultRight = document.getElementById(`default-code-right-${codeId}`);
-  const charLeft = document.getElementById(`char-level-code-left-${codeId}`);
-  const charRight = document.getElementById(`char-level-code-right-${codeId}`);
-
-  if (!defaultLeft || !defaultRight || !charLeft || !charRight) {
-    console.warn(`高亮切换失败：找不到 codeId = ${codeId} 的元素`);
-    return;
-  }
-
+  // 更新按钮状态
   document.querySelectorAll(`.highlight-toggle[data-code-id="${codeId}"] button`).forEach(btn => {
     btn.classList.remove('active');
   });
   document.querySelector(`.highlight-toggle[data-code-id="${codeId}"] .${mode}-highlight`).classList.add('active');
-
+  
+  // 更新描述文本
   const descriptionElement = document.getElementById(`mode-description-${codeId}`);
   if (mode === 'default') {
     descriptionElement.innerHTML = '当前模式：<b>默认高亮</b> - 按代码块显示相似部分';
-    defaultLeft.style.display = 'block';
-    defaultRight.style.display = 'block';
-    charLeft.style.display = 'none';
-    charRight.style.display = 'none';
   } else {
     descriptionElement.innerHTML = '当前模式：<b>字符级高亮</b> - 精确显示每个相似字符';
-    defaultLeft.style.display = 'none';
-    defaultRight.style.display = 'none';
-    charLeft.style.display = 'block';
-    charRight.style.display = 'block';
+  }
+  
+  // 切换代码显示
+  if (mode === 'default') {
+    document.getElementById(`default-code-left-${codeId}`).style.display = 'block';
+    document.getElementById(`default-code-right-${codeId}`).style.display = 'block';
+    document.getElementById(`char-level-code-left-${codeId}`).style.display = 'none';
+    document.getElementById(`char-level-code-right-${codeId}`).style.display = 'none';
+  } else {
+    document.getElementById(`default-code-left-${codeId}`).style.display = 'none';
+    document.getElementById(`default-code-right-${codeId}`).style.display = 'none';
+    document.getElementById(`char-level-code-left-${codeId}`).style.display = 'block';
+    document.getElementById(`char-level-code-right-${codeId}`).style.display = 'block';
   }
 }
-
 
 // 页面加载完成后计算和显示行数信息
 document.addEventListener('DOMContentLoaded', function() {
